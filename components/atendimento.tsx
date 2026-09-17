@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/beat";
 import { PainelConfig } from "@/components/painel-config";
 import { Transcricao } from "@/components/transcricao";
 import { MedidorCusto } from "@/components/medidor-custo";
+import { Orbe } from "@/components/orbe";
 import { useAtendimento } from "@/lib/useAtendimento";
 import { paraTexto } from "@/lib/falas";
 import { CONFIG_PADRAO, gravarConfig, lerConfig, pareceChave, type Config } from "@/lib/config";
@@ -68,7 +69,7 @@ export function Atendimento() {
     [config, compilado, promptTranscricao],
   );
 
-  const { estado, falas, uso, turnos, segundos, falando, erro, iniciar, encerrar, limparErro } =
+  const { estado, falas, uso, turnos, segundos, falando, erro, lerNiveis, iniciar, encerrar, limparErro } =
     useAtendimento(configAtiva);
 
   const emLigacao = estado === "conectando" || estado === "ativo";
@@ -177,7 +178,7 @@ export function Atendimento() {
 
             {emLigacao && (
               <>
-                <Disco estado={estado} falando={falando} />
+                <Disco estado={estado} falando={falando} lerNiveis={lerNiveis} />
                 <div className="mt-8">
                   <Transcricao falas={falas} />
                 </div>
@@ -232,8 +233,14 @@ export function Atendimento() {
   );
 }
 
-/** O disco que diz de quem é a vez. */
-function Disco({ estado, falando }: { estado: string; falando: "clara" | "cliente" | null }) {
+/** O orbe, e a linha que diz de quem é a vez. */
+function Disco({
+  estado, falando, lerNiveis,
+}: {
+  estado: string;
+  falando: "clara" | "cliente" | null;
+  lerNiveis: (dt: number) => { clara: number; cliente: number };
+}) {
   const legenda =
     estado === "conectando" ? "chamando…"
       : falando === "clara" ? `${NOME_ATENDENTE} está falando`
@@ -242,34 +249,17 @@ function Disco({ estado, falando }: { estado: string; falando: "clara" | "client
 
   return (
     <div className="flex flex-col items-center py-2">
-      <div className="relative grid size-20 place-items-center sm:size-24">
-        {falando && (
-          <span
-            className={cn(
-              "pulso absolute inset-0 rounded-full",
-              falando === "clara" ? "bg-primary/30" : "bg-accent/20",
-            )}
-          />
-        )}
-        <span
-          className={cn(
-            "relative grid size-20 place-items-center rounded-full text-2xl font-semibold transition-colors sm:size-24",
-            falando === "clara"
-              ? "bg-primary text-primary-foreground"
-              : "border border-border bg-card text-foreground",
-            estado === "conectando" && "animate-pulse",
-          )}
-        >
-          {falando === "cliente" ? (
-            <span className="barra flex items-end gap-1 text-muted-foreground">
-              <span /><span /><span />
-            </span>
-          ) : (
-            NOME_ATENDENTE[0]
-          )}
+      <div className="grid place-items-center">
+        {/* Dois tamanhos porque o orbe é desenhado em pixel, não escalado:
+            reduzir por CSS borraria os pontos. */}
+        <span className="sm:hidden">
+          <Orbe tamanho={124} lerNiveis={lerNiveis} falando={falando} conectando={estado === "conectando"} />
+        </span>
+        <span className="hidden sm:block">
+          <Orbe tamanho={156} lerNiveis={lerNiveis} falando={falando} conectando={estado === "conectando"} />
         </span>
       </div>
-      <p className="mt-3 text-sm text-muted-foreground">{legenda}</p>
+      <p aria-live="polite" className="mt-2 text-sm text-muted-foreground">{legenda}</p>
     </div>
   );
 }

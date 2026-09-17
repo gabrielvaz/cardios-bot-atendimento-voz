@@ -40,6 +40,29 @@ A escolha foi prompt inteiro, não busca com tool. São 37 documentos, não 370.
 Se o contexto apertar, a tool entra depois sem reescrever nada: `montarBase()`
 já está isolada em `lib/conhecimento/index.ts`.
 
+## O orbe
+
+Durante a ligação, no lugar de um indicador estático, roda uma esfera de 700
+pontos que gira e reage ao áudio de verdade. Laranja quando a Clara fala, navy
+quando é você.
+
+A voz não move o ponto diretamente: ela escala a amplitude de uma onda que
+corre pela superfície da esfera. É o que faz o orbe respirar em vez de pulsar.
+O deslocamento máximo é 18% do raio, e só no pico da fala.
+
+A amplitude vem de dois `AnalyserNode`, um no microfone e outro na trilha
+remota do WebRTC. Medir os dois em separado é o que permite saber quem tem a
+palavra. Nada disso passa por estado do React: o orbe lê o medidor dentro do
+próprio laço de animação, porque um `useState` a 60 quadros por segundo
+reconciliaria a página inteira para mudar pixel de canvas.
+
+`/orbe` é a bancada de ajuste: o mesmo componente, com a amplitude vindo de um
+sinal simulado ou do seu microfone. Serve para mexer em cor e movimento sem
+abrir uma ligação paga a cada tentativa.
+
+As alternativas que foram descartadas no caminho continuam em `/orbs.html`
+(seis famílias) e `/orbs-pontos.html` (oito variantes desta).
+
 ## O dicionário de fala
 
 O reconhecimento de voz erra nome próprio o tempo todo: "cardio online" por
@@ -134,6 +157,10 @@ lib/conhecimento/                   a base gerada e o markdown que o modelo lê
 components/atendimento.tsx          a tela inteira
 components/painel-config.tsx        o painel de configuração
 components/painel-dicionario.tsx    a administração do dicionário
+components/orbe.tsx                 a esfera de pontos
+lib/amplitude.ts                    a medição do áudio (puro, testado)
+lib/cores.ts                        os tokens do Beat no canvas (puro, testado)
+app/orbe/                           a bancada de ajuste
 components/ui/beat.tsx              o Beat Design System portado para React
 .github/workflows/pages.yml         o deploy
 scripts/gerar-conhecimento.mjs      extrai das fontes
@@ -152,8 +179,8 @@ arquivo sai.
 
 ## O que ainda não foi testado
 
-A conversa de verdade. O que está verificado: o build estático passa, os 39
-testes passam, a página responde em celular e desktop sem estouro de largura, e
+A conversa de verdade. O que está verificado: o build estático passa, os 54
+testes passam, o orbe desenha e se move na bancada, a página responde em celular e desktop sem estouro de largura, e
 a OpenAI aceita chamada do navegador nos dois endpoints. Falta ligar com uma
 chave real e ouvir a Clara.
 

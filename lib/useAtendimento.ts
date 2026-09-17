@@ -25,6 +25,7 @@ import type { Config } from "./config";
 import { lerUso, somarUso, USO_ZERO, type Uso } from "./custo";
 import { aplicarDicionario, type DicionarioCompilado } from "./dicionario";
 import { congelar, escrever as escreverFala, reservar as reservarFala, type Fala, type Quem } from "./falas";
+import { Medidor, type Niveis } from "./amplitude";
 
 export type Estado = "parado" | "conectando" | "ativo" | "encerrado";
 export type { Fala, Quem } from "./falas";
@@ -49,6 +50,12 @@ export type Atendimento = {
   segundos: number;
   falando: Quem | null;
   erro: Erro | null;
+  /**
+   * A amplitude dos dois lados, agora. Não é estado de propósito: quem desenha
+   * o orbe chama isto sessenta vezes por segundo, e um `useState` aqui
+   * reconciliaria a página inteira a cada quadro.
+   */
+  lerNiveis: (dt: number) => Niveis;
   iniciar: () => Promise<void>;
   encerrar: () => void;
   limparErro: () => void;
@@ -67,12 +74,15 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
   const dcRef = useRef<RTCDataChannel | null>(null);
   const micRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const medidorRef = useRef<Medidor | null>(null);
   const inicioRef = useRef<number>(0);
   // A config vive numa ref para o handler de evento não capturar valor velho.
   const configRef = useRef(config);
   configRef.current = config;
 
   const encerrar = useCallback(() => {
+    medidorRef.current?.encerrar();
+    medidorRef.current = null;
     dcRef.current?.close();
     pcRef.current?.getSenders().forEach((s) => s.track?.stop());
     pcRef.current?.close();
@@ -212,6 +222,12 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       }
       micRef.current = mic;
 
+      // O medidor sobe junto com o microfone: a voz de quem liga já pode ser
+      // medida antes mesmo de a Clara atender.
+      const medidor = new Medidor();
+      medidor.ligar("cliente", mic);
+      medidorRef.current = medidor;
+
       // 2. segredo efêmero, direto na OpenAI
       const resposta = await fetch("https://api.openai.com/v1/realtime/client_secrets", {
         method: "POST",
@@ -249,6 +265,8 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       const dados = await resposta.json().catch(() => ({}));
       if (!resposta.ok) {
         mic.getTracks().forEach((t) => t.stop());
+        medidor.encerrar();
+        medidorRef.current = null;
         setEstado("parado");
         setErro({
           titulo:
@@ -277,6 +295,9 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       audioRef.current = audio;
       pc.ontrack = (e) => {
         audio.srcObject = e.streams[0];
+        // A trilha remota é a voz da Clara. Medi-la em separado é o que
+        // permite o orbe trocar de cor conforme quem tem a palavra.
+        medidor.ligar("clara", e.streams[0]);
       };
       pc.addTrack(mic.getAudioTracks()[0], mic);
 
@@ -315,6 +336,8 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       if (!sdp.ok) {
         const texto = await sdp.text();
         mic.getTracks().forEach((t) => t.stop());
+        medidor.encerrar();
+        medidorRef.current = null;
         pc.close();
         pcRef.current = null;
         setEstado("parado");
@@ -332,9 +355,14 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
     }
   }, [encerrar, tratarEvento]);
 
+  const lerNiveis = useCallback(
+    (dt: number) => medidorRef.current?.ler(dt) ?? { clara: 0, cliente: 0 },
+    [],
+  );
+
   return {
     estado, falas, uso, turnos, segundos, falando, erro,
-    iniciar, encerrar,
+    lerNiveis, iniciar, encerrar,
     limparErro: () => setErro(null),
   };
 }

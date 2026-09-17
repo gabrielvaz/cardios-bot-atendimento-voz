@@ -72,24 +72,3 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* O anel que pulsa em volta do disco quando alguém está falando. */
-@keyframes pulso {
-  0%   { transform: scale(1);    opacity: 0.5; }
-  70%  { transform: scale(1.45); opacity: 0; }
-  100% { transform: scale(1.45); opacity: 0; }
-}
-.pulso { animation: pulso 1.8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite; }
-
-/* As três barrinhas do "ouvindo", para a fala que ainda está chegando. */
-@keyframes barra {
-  0%, 100% { transform: scaleY(0.35); }
-  50%      { transform: scaleY(1); }
-}
-.barra > span { display: block; width: 3px; height: 14px; border-radius: 2px;
-  background: currentColor; animation: barra 0.9s ease-in-out infinite; }
-.barra > span:nth-child(2) { animation-delay: 0.15s; }
-.barra > span:nth-child(3) { animation-delay: 0.3s; }
-
-@media (prefers-reduced-motion: reduce) {
-  .pulso, .barra > span { animation: none; }
-}
