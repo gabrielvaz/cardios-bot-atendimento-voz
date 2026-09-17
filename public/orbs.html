@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seis orbes para a Clara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens do Beat: laranja #ee5b00, navy #071046, Inter. */
+  :root{
+    --marca:#ee5b00; --marca-claro:#ff8c42; --navy:#071046; --lavanda:#ab8ed3;
+    --fundo:#fff; --papel:#fff; --tinta:#333; --fraca:#747474; --linha:#e5e7eb;
+    --orbe:var(--marca); --orbe2:var(--marca-claro);
+  }
+  body.escuro{
+    --fundo:#0b0d10; --papel:#14171c; --tinta:#e8e8e8; --fraca:#9aa0a6; --linha:#262b33;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--fundo);color:var(--tinta);
+       -webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fundo) 88%,transparent);
+         backdrop-filter:blur(12px);border-bottom:1px solid var(--linha);padding:14px 20px}
+  .barra{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  h1{font-size:15px;margin:0;font-weight:600;white-space:nowrap}
+  .sub{font-size:12px;color:var(--fraca);margin:2px 0 0}
+  .grupo{display:flex;gap:6px;align-items:center;margin-left:auto}
+  button{font:inherit;font-size:13px;font-weight:500;padding:7px 14px;border-radius:8px;
+         border:1px solid var(--linha);background:var(--papel);color:var(--tinta);cursor:pointer;
+         transition:all .15s}
+  button:hover{border-color:color-mix(in srgb,var(--marca) 50%,transparent)}
+  button.on{background:var(--marca);border-color:var(--marca);color:#fff}
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 80px;
+       display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+  .cartao{background:var(--papel);border:1px solid var(--linha);border-radius:16px;overflow:hidden;
+          display:flex;flex-direction:column}
+  .palco{height:260px;display:grid;place-items:center;position:relative;overflow:hidden}
+  .pe{padding:14px 18px 18px;border-top:1px solid var(--linha)}
+  .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--marca);font-weight:500}
+  .nome{font-size:15px;font-weight:600;margin:3px 0 5px}
+  .desc{font-size:12.5px;line-height:1.55;color:var(--fraca);margin:0}
+  .tec{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--fraca);margin-top:8px;opacity:.75}
+  canvas{display:block}
+
+  /* 2. blob de gradiente, tudo em CSS */
+  .blob{position:relative;width:180px;height:180px}
+  /* Três lobos deslocados do centro girando em velocidades diferentes. O
+     deslocamento é o que os mantém distinguíveis: centrados, virariam um
+     borrão só. O blur fica baixo o bastante para a forma continuar legível. */
+  .blob i{position:absolute;inset:0;border-radius:50%;filter:blur(15px);mix-blend-mode:multiply}
+  .blob i::after{content:"";position:absolute;width:64%;height:64%;border-radius:50%;
+                 transform:scale(calc(.8 + var(--a) * .45))}
+  .blob i:nth-child(1){animation:gira 6.5s linear infinite}
+  .blob i:nth-child(1)::after{top:2%;left:18%;background:var(--orbe)}
+  .blob i:nth-child(2){animation:gira 9s linear infinite reverse}
+  .blob i:nth-child(2)::after{top:30%;left:36%;background:var(--orbe2)}
+  .blob i:nth-child(3){animation:gira 13s linear infinite}
+  .blob i:nth-child(3)::after{top:32%;left:0%;
+    background:color-mix(in srgb,var(--orbe) 62%,#fff)}
+  .blob b{position:absolute;inset:44px;border-radius:50%;background:#fff;
+          filter:blur(7px);opacity:calc(.22 + var(--a) * .45);
+          transform:scale(calc(.8 + var(--a) * .4));z-index:2}
+  body.escuro .blob i{mix-blend-mode:screen}
+  body.escuro .blob b{background:var(--orbe2)}
+  @keyframes gira{to{transform:rotate(360deg)}}
+
+  @media (prefers-reduced-motion: reduce){
+    .blob i{animation:none}
+  }
+  .aviso{grid-column:1/-1;font-size:12.5px;color:var(--fraca);text-align:center;padding:4px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="barra">
+    <div>
+      <h1>Seis orbes para a Clara</h1>
+      <p class="sub">Todos reagem à mesma amplitude. Escolha um e eu ponho no app.</p>
+    </div>
+    <div class="grupo">
+      <button id="bParado" class="on">Parado</button>
+      <button id="bClara">Clara falando</button>
+      <button id="bVoce">Você falando</button>
+      <button id="bMic">Usar meu microfone</button>
+      <button id="bTema">Escuro</button>
+    </div>
+  </div>
+</header>
+
+<main id="grade">
+  <p class="aviso">A amplitude é simulada. Clique em <strong>Usar meu microfone</strong> para ver reagindo à sua voz de verdade.</p>
+</main>
+
+<script>
+/* ------------------------------------------------------------------ *
+ * Uma amplitude só, compartilhada pelos seis. É o que torna a
+ * comparação honesta: a diferença que você vê é de desenho, não de
+ * sinal.
+ * ------------------------------------------------------------------ */
+const sinal = { amp: 0, alvo: 0, estado: "parado", t: 0 };
+let analisador = null, dadosMic = null;
+
+function passoDoSinal(dt){
+  sinal.t += dt;
+  if (analisador) {
+    analisador.getByteTimeDomainData(dadosMic);
+    let soma = 0;
+    for (let i = 0; i < dadosMic.length; i++){
+      const v = (dadosMic[i] - 128) / 128;
+      soma += v * v;
+    }
+    sinal.alvo = Math.min(1, Math.sqrt(soma / dadosMic.length) * 4.5);
+  } else if (sinal.estado === "parado") {
+    // Respiração lenta, para o orbe não ficar morto na tela.
+    sinal.alvo = 0.06 + 0.04 * (0.5 + 0.5 * Math.sin(sinal.t * 1.1));
+  } else {
+    // Fala tem sílaba: duas senoides incomensuráveis dão um envelope
+    // irregular o bastante para parecer voz.
+    const s = 0.5 + 0.5 * Math.sin(sinal.t * 7.3);
+    const p = 0.5 + 0.5 * Math.sin(sinal.t * 2.9 + 1.7);
+    sinal.alvo = Math.max(0.08, Math.min(1, s * p * 1.5));
+  }
+  // Ataque rápido, queda lenta: é como um medidor de áudio se comporta.
+  const k = sinal.alvo > sinal.amp ? 14 : 5;
+  sinal.amp += (sinal.alvo - sinal.amp) * Math.min(1, dt * k);
+}
+
+function cores(){
+  const raiz = getComputedStyle(document.body);
+  if (sinal.estado === "voce") {
+    return { a: raiz.getPropertyValue("--navy").trim(), b: raiz.getPropertyValue("--lavanda").trim() };
+  }
+  return { a: raiz.getPropertyValue("--marca").trim(), b: raiz.getPropertyValue("--marca-claro").trim() };
+}
+
+/* ------------------------------------------------------------------ *
+ * Andaime dos cartões
+ * ------------------------------------------------------------------ */
+const ORBES = [];
+function registrar(num, nome, desc, tec, montar){ ORBES.push({ num, nome, desc, tec, montar }); }
+
+function criarCanvas(palco, tamanho = 260){
+  const c = document.createElement("canvas");
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = tamanho * dpr; c.height = tamanho * dpr;
+  c.style.width = tamanho + "px"; c.style.height = tamanho + "px";
+  const ctx = c.getContext("2d");
+  ctx.scale(dpr, dpr);
+  palco.appendChild(c);
+  return { ctx, lado: tamanho };
+}
+
+/* ---- 1. Fita da Siri ---------------------------------------------- */
+registrar(1, "Fita", "Faixas translúcidas que atravessam o círculo de lado a lado, engrossando na fala. É o gesto da Siri: a voz vira fita. Lê bem em tamanho pequeno.",
+"canvas · 4 fitas de espessura variável, recorte circular", (palco) => {
+  const { ctx, lado } = criarCanvas(palco);
+  const meio = lado / 2, raio = 82;
+  return () => {
+    ctx.clearRect(0, 0, lado, lado);
+    const { a, b } = cores(), amp = sinal.amp;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(meio, meio, raio, 0, Math.PI * 2); ctx.clip();
+
+    for (let n = 0; n < 4; n++){
+      const fase = sinal.t * (0.9 + n * 0.43) + n * 2.1;
+      const freq = 1.2 + n * 0.45;
+      // A fita é a área entre duas senoides próximas: a espessura varia ao
+      // longo do percurso, e é isso que a faz parecer fita e não linha.
+      const desvio = raio * (0.1 + amp * 0.52) * (1 - n * 0.14);
+      const grossura = 5 + amp * 15 + n * 2;
+      const borda = (x, sentido) => {
+        const janela = Math.cos((x / raio) * Math.PI / 2) ** 0.7;
+        const centro = Math.sin((x / raio) * Math.PI * freq + fase) * desvio * janela;
+        return meio + centro + sentido * grossura * (0.45 + 0.55 * janela);
+      };
+      ctx.beginPath();
+      for (let x = -raio; x <= raio; x += 3) {
+        const y = borda(x, -1);
+        x === -raio ? ctx.moveTo(meio + x, y) : ctx.lineTo(meio + x, y);
+      }
+      for (let x = raio; x >= -raio; x -= 3) ctx.lineTo(meio + x, borda(x, 1));
+      ctx.closePath();
+      const g = ctx.createLinearGradient(meio - raio, 0, meio + raio, 0);
+      g.addColorStop(0, hexa(b, 0));
+      g.addColorStop(0.5, n % 2 ? a : b);
+      g.addColorStop(1, hexa(a, 0));
+      ctx.fillStyle = g;
+      ctx.globalAlpha = 0.42 + n * 0.12;
+      ctx.fill();
+    }
+    ctx.restore();
+    ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(meio, meio, raio, 0, Math.PI * 2);
+    ctx.strokeStyle = hexa(a, 0.2); ctx.lineWidth = 1.5; ctx.stroke();
+  };
+});
+
+/* ---- 2. Blob de gradiente ----------------------------------------- */
+registrar(2, "Lobos", "Três lobos deslocados girando em velocidades diferentes, que se fundem e se separam. Sem canvas: é CSS puro, custa quase nada e escala para qualquer tamanho.",
+"CSS · três lobos + blur + mix-blend", (palco) => {
+  const d = document.createElement("div");
+  d.className = "blob";
+  d.innerHTML = "<i></i><i></i><i></i><b></b>";
+  palco.appendChild(d);
+  return () => {
+    d.style.setProperty("--a", sinal.amp.toFixed(3));
+    const { a, b } = cores();
+    d.style.setProperty("--orbe", a);
+    d.style.setProperty("--orbe2", b);
+  };
+});
+
+/* ---- 3. Esfera macia ---------------------------------------------- */
+registrar(3, "Esfera", "Uma bola sólida com halo, que respira e ganha brilho na fala. É o caminho do ChatGPT no celular: quase nada acontece, e por isso não cansa numa ligação longa.",
+"canvas · gradiente radial + halo + escala", (palco) => {
+  const { ctx, lado } = criarCanvas(palco);
+  const meio = lado / 2;
+  return () => {
+    ctx.clearRect(0, 0, lado, lado);
+    const { a, b } = cores(), amp = sinal.amp;
+    const raio = 62 + amp * 16;
+
+    // Halo: o que dá a sensação de energia sem mexer na forma.
+    const halo = ctx.createRadialGradient(meio, meio, raio * 0.8, meio, meio, raio * (1.75 + amp * 0.5));
+    halo.addColorStop(0, hexa(a, 0.32 + amp * 0.3));
+    halo.addColorStop(1, hexa(a, 0));
+    ctx.fillStyle = halo;
+    ctx.beginPath(); ctx.arc(meio, meio, raio * 2.3, 0, Math.PI * 2); ctx.fill();
+
+    const corpo = ctx.createRadialGradient(meio - raio * 0.32, meio - raio * 0.36, raio * 0.1, meio, meio, raio);
+    corpo.addColorStop(0, b);
+    corpo.addColorStop(0.55, a);
+    corpo.addColorStop(1, escurecer(a, 0.22));
+    ctx.fillStyle = corpo;
+    ctx.beginPath(); ctx.arc(meio, meio, raio, 0, Math.PI * 2); ctx.fill();
+
+    // Brilho especular, fixo: é ele que faz parecer esfera e não círculo.
+    const luz = ctx.createRadialGradient(meio - raio * 0.34, meio - raio * 0.42, 0, meio - raio * 0.34, meio - raio * 0.42, raio * 0.62);
+    luz.addColorStop(0, "rgba(255,255,255,.5)");
+    luz.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = luz;
+    ctx.beginPath(); ctx.arc(meio, meio, raio, 0, Math.PI * 2); ctx.fill();
+  };
+});
+
+/* ---- 4. Nuvem de pontos ------------------------------------------- */
+registrar(4, "Pontos", "Setecentos pontos numa esfera que gira, com o raio empurrado pela voz. Parece técnico, e é o único que mostra a forma tridimensional de verdade.",
+"canvas · esfera de Fibonacci projetada", (palco) => {
+  const { ctx, lado } = criarCanvas(palco);
+  const meio = lado / 2, N = 700, pontos = [];
+  const phi = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++){
+    const y = 1 - (i / (N - 1)) * 2;
+    const r = Math.sqrt(1 - y * y);
+    const th = phi * i;
+    pontos.push([Math.cos(th) * r, y, Math.sin(th) * r]);
+  }
+  return () => {
+    ctx.clearRect(0, 0, lado, lado);
+    const { a, b } = cores(), amp = sinal.amp;
+    const base = 66, giro = sinal.t * 0.42, inclina = 0.42;
+    for (const [x0, y0, z0] of pontos){
+      // Deslocamento por ponto: a "onda" corre pela superfície.
+      const onda = Math.sin(y0 * 5 + sinal.t * 4.5) * Math.cos(x0 * 4 - sinal.t * 3.1);
+      const r = base + amp * 26 * onda + amp * 9;
+      const cx = Math.cos(giro), sx = Math.sin(giro);
+      let x = x0 * cx - z0 * sx, z = x0 * sx + z0 * cx;
+      const y = y0 * Math.cos(inclina) - z * Math.sin(inclina);
+      z = y0 * Math.sin(inclina) + z * Math.cos(inclina);
+      const p = 1.9 / (1.9 + z);
+      const prof = (z + 1) / 2;
+      ctx.globalAlpha = 0.18 + (1 - prof) * 0.72;
+      ctx.fillStyle = prof > 0.55 ? a : b;
+      const t = (0.9 + (1 - prof) * 1.5) * p;
+      ctx.beginPath(); ctx.arc(meio + x * r * p, meio + y * r * p, t, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+/* ---- 5. Ondas concêntricas ---------------------------------------- */
+registrar(5, "Ondas", "Anéis saindo do centro, um por sílaba. Fala mais alto, saem mais anéis e mais longe. É o que mais comunica que alguém está falando agora.",
+"canvas · anéis emitidos por amplitude", (palco) => {
+  const { ctx, lado } = criarCanvas(palco);
+  const meio = lado / 2;
+  let aneis = [], desde = 0;
+  return (dt) => {
+    ctx.clearRect(0, 0, lado, lado);
+    const { a, b } = cores(), amp = sinal.amp;
+
+    desde += dt;
+    const intervalo = 0.62 - amp * 0.44;
+    if (desde > intervalo && amp > 0.1){ desde = 0; aneis.push({ r: 40, v: 26 + amp * 58, forca: amp }); }
+    aneis = aneis.filter((o) => o.r < 128);
+    for (const o of aneis){
+      o.r += o.v * dt;
+      const restante = 1 - (o.r - 40) / 88;
+      ctx.beginPath(); ctx.arc(meio, meio, o.r, 0, Math.PI * 2);
+      ctx.strokeStyle = hexa(a, Math.max(0, restante * o.forca * 0.75));
+      ctx.lineWidth = 1 + o.forca * 2.6;
+      ctx.stroke();
+    }
+    const raio = 36 + amp * 10;
+    const g = ctx.createRadialGradient(meio, meio, 0, meio, meio, raio);
+    g.addColorStop(0, b); g.addColorStop(1, a);
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(meio, meio, raio, 0, Math.PI * 2); ctx.fill();
+  };
+});
+
+/* ---- 6. Orbe líquido ---------------------------------------------- */
+registrar(6, "Líquido", "O contorno derrete e volta, feito gota. O único que muda de forma de verdade, e o mais caro dos seis para desenhar.",
+"canvas · raio modulado por ruído em ângulo", (palco) => {
+  const { ctx, lado } = criarCanvas(palco);
+  const meio = lado / 2;
+  return () => {
+    ctx.clearRect(0, 0, lado, lado);
+    const { a, b } = cores(), amp = sinal.amp;
+    const base = 64;
+
+    const desenhar = (escala, alpha, defasagem) => {
+      ctx.beginPath();
+      for (let i = 0; i <= 120; i++){
+        const ang = (i / 120) * Math.PI * 2;
+        // Três harmônicas incomensuráveis: o contorno nunca repete o
+        // mesmo desenho, que é o que evita cara de engrenagem.
+        const ruido =
+          Math.sin(ang * 3 + sinal.t * 1.6 + defasagem) * 0.42 +
+          Math.sin(ang * 5 - sinal.t * 2.3 + defasagem) * 0.3 +
+          Math.sin(ang * 2 + sinal.t * 1.1 + defasagem) * 0.28;
+        const r = (base + ruido * (6 + amp * 30)) * escala;
+        const x = meio + Math.cos(ang) * r, y = meio + Math.sin(ang) * r;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      const g = ctx.createLinearGradient(meio - base, meio - base, meio + base, meio + base);
+      g.addColorStop(0, b); g.addColorStop(1, a);
+      ctx.fillStyle = g; ctx.globalAlpha = alpha; ctx.fill();
+    };
+
+    desenhar(1.18, 0.2, 2.4);
+    desenhar(1.06, 0.3, 1.2);
+    desenhar(1.0, 0.95, 0);
+    ctx.globalAlpha = 1;
+  };
+});
+
+/* ------------------------------------------------------------------ *
+ * Utilitários de cor
+ * ------------------------------------------------------------------ */
+function hexa(hex, alpha){
+  const n = parseInt(hex.replace("#",""), 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+}
+function escurecer(hex, fator){
+  const n = parseInt(hex.replace("#",""), 16);
+  const f = 1 - fator;
+  return `rgb(${Math.round(((n>>16)&255)*f)},${Math.round(((n>>8)&255)*f)},${Math.round((n&255)*f)})`;
+}
+
+/* ------------------------------------------------------------------ *
+ * Montagem e laço
+ * ------------------------------------------------------------------ */
+const grade = document.getElementById("grade");
+const desenhos = [];
+for (const o of ORBES){
+  const cartao = document.createElement("section");
+  cartao.className = "cartao";
+  cartao.innerHTML = `<div class="palco"></div>
+    <div class="pe">
+      <div class="num">${String(o.num).padStart(2,"0")}</div>
+      <h2 class="nome">${o.nome}</h2>
+      <p class="desc">${o.desc}</p>
+      <p class="tec">${o.tec}</p>
+    </div>`;
+  grade.appendChild(cartao);
+  desenhos.push(o.montar(cartao.querySelector(".palco")));
+}
+
+let anterior = performance.now();
+function laco(agora){
+  const dt = Math.min(0.05, (agora - anterior) / 1000);
+  anterior = agora;
+  passoDoSinal(dt);
+  for (const d of desenhos) d(dt);
+  requestAnimationFrame(laco);
+}
+requestAnimationFrame(laco);
+
+/* ------------------------------------------------------------------ *
+ * Controles
+ * ------------------------------------------------------------------ */
+const botoes = { parado: bParado, clara: bClara, voce: bVoce };
+function trocarEstado(e){
+  sinal.estado = e;
+  for (const [k, b] of Object.entries(botoes)) b.classList.toggle("on", k === e);
+}
+bParado.onclick = () => trocarEstado("parado");
+bClara.onclick = () => trocarEstado("clara");
+bVoce.onclick = () => trocarEstado("voce");
+
+bMic.onclick = async () => {
+  if (analisador){
+    analisador = null; bMic.classList.remove("on"); bMic.textContent = "Usar meu microfone"; return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const ctx = new AudioContext();
+    const fonte = ctx.createMediaStreamSource(stream);
+    analisador = ctx.createAnalyser();
+    analisador.fftSize = 1024;
+    dadosMic = new Uint8Array(analisador.fftSize);
+    fonte.connect(analisador);
+    bMic.classList.add("on"); bMic.textContent = "Microfone ligado";
+    trocarEstado("voce");
+  } catch {
+    bMic.textContent = "Microfone negado";
+  }
+};
+
+bTema.onclick = () => {
+  const escuro = document.body.classList.toggle("escuro");
+  bTema.textContent = escuro ? "Claro" : "Escuro";
+};
+</script>
+</body>
+</html>
