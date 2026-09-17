@@ -1,0 +1,32 @@
+{
+  "_fonte": "cardios-site/lib/site.ts e cardios-site/app/(site)/suporte/page.tsx, extraídos em 2026-09-17",
+  "empresa": {
+    "nome": "Cardios",
+    "nomeCompleto": "Cardios Sistemas Comerciais Industriais Ltda",
+    "grupo": "Cardioline",
+    "fundacao": 1977,
+    "descricao": "Pioneira em Holter e MAPA, a Cardios desenvolve e fabrica gravadores digitais, monitores de pressão arterial e softwares de análise para diagnóstico cardiológico.",
+    "equipamentosNoMercado": 115000,
+    "site": "https://cardios.com.br"
+  },
+  "horario": "Segunda a sexta, das 8h às 18h30 (horário de Brasília)",
+  "telefones": [
+    { "area": "Suporte técnico", "numero": "(11) 3883-3010" },
+    { "area": "Assistência técnica (reparo)", "numero": "(11) 3883-3040" },
+    { "area": "Vendas", "numero": "(11) 3883-3030" },
+    { "area": "Contato geral", "numero": "(11) 3883-3000" },
+    { "area": "Financeiro", "numero": "(11) 3883-3003" },
+    { "area": "Expedição", "numero": "(11) 3883-3080" }
+  ],
+  "emails": { "vendas": "vendas@cardios.com.br", "assistencia": "assistec@cardios.com.br" },
+  "whatsapp": "(11) 3883-3030",
+  "enderecoAssistencia": "Avenida Paulista, 509, 3º andar, conjunto 309, Bela Vista, São Paulo/SP, CEP 01311-910",
+  "lojaAcessorios": "https://cardios.srv.br/loja-de-acessorios/",
+  "manuais": "https://cardios.com.br/downloads",
+  "politicas": [
+    "Garantia padrão dos gravadores: 3 anos para o equipamento, com suporte técnico permanente. Acessórios têm garantia própria e não entram na garantia do equipamento.",
+    "Envio para reparo: preencher a Declaração de Envio (disponível em cardios.com.br/suporte) e enviar com o equipamento e os acessórios. O frete é por conta do cliente.",
+    "Entrega pessoal do equipamento é aceita no mesmo endereço, de segunda a sexta, das 8h às 18h30.",
+    "Acessórios (eletrodo, cabo, cinta, bateria) são comprados na loja de acessórios da Cardios."
+  ]
+}

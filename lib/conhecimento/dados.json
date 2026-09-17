@@ -1,0 +1,650 @@
+{
+ "geradoEm": "2026-09-17",
+ "fontes": [
+  "https://v9q.github.io/faqcardios/",
+  "cardios-site/content/products.json",
+  "scripts/contato.json"
+ ],
+ "contato": {
+  "_fonte": "cardios-site/lib/site.ts e cardios-site/app/(site)/suporte/page.tsx, extraídos em 2026-09-17",
+  "empresa": {
+   "nome": "Cardios",
+   "nomeCompleto": "Cardios Sistemas Comerciais Industriais Ltda",
+   "grupo": "Cardioline",
+   "fundacao": 1977,
+   "descricao": "Pioneira em Holter e MAPA, a Cardios desenvolve e fabrica gravadores digitais, monitores de pressão arterial e softwares de análise para diagnóstico cardiológico.",
+   "equipamentosNoMercado": 115000,
+   "site": "https://cardios.com.br"
+  },
+  "horario": "Segunda a sexta, das 8h às 18h30 (horário de Brasília)",
+  "telefones": [
+   {
+    "area": "Suporte técnico",
+    "numero": "(11) 3883-3010"
+   },
+   {
+    "area": "Assistência técnica (reparo)",
+    "numero": "(11) 3883-3040"
+   },
+   {
+    "area": "Vendas",
+    "numero": "(11) 3883-3030"
+   },
+   {
+    "area": "Contato geral",
+    "numero": "(11) 3883-3000"
+   },
+   {
+    "area": "Financeiro",
+    "numero": "(11) 3883-3003"
+   },
+   {
+    "area": "Expedição",
+    "numero": "(11) 3883-3080"
+   }
+  ],
+  "emails": {
+   "vendas": "vendas@cardios.com.br",
+   "assistencia": "assistec@cardios.com.br"
+  },
+  "whatsapp": "(11) 3883-3030",
+  "enderecoAssistencia": "Avenida Paulista, 509, 3º andar, conjunto 309, Bela Vista, São Paulo/SP, CEP 01311-910",
+  "lojaAcessorios": "https://cardios.srv.br/loja-de-acessorios/",
+  "manuais": "https://cardios.com.br/downloads",
+  "politicas": [
+   "Garantia padrão dos gravadores: 3 anos para o equipamento, com suporte técnico permanente. Acessórios têm garantia própria e não entram na garantia do equipamento.",
+   "Envio para reparo: preencher a Declaração de Envio (disponível em cardios.com.br/suporte) e enviar com o equipamento e os acessórios. O frete é por conta do cliente.",
+   "Entrega pessoal do equipamento é aceita no mesmo endereço, de segunda a sexta, das 8h às 18h30.",
+   "Acessórios (eletrodo, cabo, cinta, bateria) são comprados na loja de acessórios da Cardios."
+  ]
+ },
+ "produtos": [
+  {
+   "nome": "ARTERIS AOP",
+   "slug": "arteris",
+   "resumo": "O ARTERIS AOP representa um avanço na medida de pressão no consultório, trazendo informações que possibilitam ao médico direcionar o paciente para um diagnóstico preciso e assertivo.",
+   "tags": [
+    "Análise da onda de pulso",
+    "Rigidez arterial",
+    "Diagnóstico",
+    "Pressão central",
+    "AOP"
+   ],
+   "specs": [
+    "Compatibilidade: Software M.A.P.A.s (vendido separadamente).",
+    "Conectividade: Bluetooth.",
+    "Garantia: 2 anos (equipamento).",
+    "Registro ANVISA: 10361059013"
+   ]
+  },
+  {
+   "nome": "CardioLoop",
+   "slug": "cardio-loop",
+   "resumo": "O CardioLoop é um gravador de memória contínua, ideal para o registro de eventos sintomáticos esporádicos, capturando os minutos cruciais antes e depois da marcação do evento pelo paciente.",
+   "tags": [
+    "Gravador",
+    "Monitor cardíaco",
+    "Esporádicos",
+    "Sintomas"
+   ],
+   "specs": [
+    "Compatibilidade: Software CardioLoop, Software CardioNet Client.",
+    "Conectividade: Cartão SD e Infravermelho.",
+    "Garantia: 3 anos (equipamento).",
+    "Registro ANVISA: 10361050011"
+   ]
+  },
+  {
+   "nome": "CardioMapa",
+   "slug": "cardio-mapa",
+   "resumo": "Desenvolvido para realizar dois exames (Holter e MAPA) simultaneamente, proporcionando o máximo de conforto ao paciente e otimizando a rotina de clínicas e hospitais.",
+   "tags": [
+    "Holter",
+    "MAPA",
+    "Monitor cardíaco",
+    "Simultâneo",
+    "Precisão"
+   ],
+   "specs": [
+    "Compatibilidade: Softwares CardioSmart, CardioMapa e CardioNet.",
+    "Conectividade: Cartão microSD e Internet (opcional).",
+    "Garantia: 3 anos (equipamento).",
+    "Registro ANVISA: 10361050012"
+   ]
+  },
+  {
+   "nome": "CardioSeven",
+   "slug": "cardio-seven",
+   "resumo": "O CardioSeven é um gravador de Holter de última geração que permite a gravação contínua por 7 dias de 3 canais de ECG, utilizando apenas uma pilha AAA.",
+   "tags": [
+    "Holter",
+    "CardioSeven",
+    "Monitor cardíaco",
+    "Longa Duração",
+    "Semanal"
+   ],
+   "specs": [
+    "Compatibilidade: Software CardioSmart.",
+    "Conectividade: Cartão SD e Infravermelho.",
+    "Garantia: 3 anos (equipamento).",
+    "Registro ANVISA: 10361050008"
+   ]
+  },
+  {
+   "nome": "CardioLight",
+   "slug": "cardiolight",
+   "resumo": "O CardioLight representa um salto tecnológico sem precedentes ao reunir os maiores avanços eletrônicos na precisão dos registros eletrocardiográficos, num gravador de Holter de design moderno e tamanho reduzido.",
+   "tags": [
+    "Holter digital",
+    "Monitor cardíaco",
+    "Registro contínuo",
+    "Design",
+    "Leve"
+   ],
+   "specs": [
+    "Compatibilidade: Software CardioNet, Monitor CardioVista.",
+    "Conectividade: Cartão SD e Infravermelho.",
+    "Garantia: 3 anos (equipamento).",
+    "Registro ANVISA: 10361050006"
+   ]
+  },
+  {
+   "nome": "CardioLight+",
+   "slug": "cardiolight-plus",
+   "resumo": "O CardioLight+ representa um salto tecnológico, reunindo os maiores avanços na precisão dos registros eletrocardiográficos em um gravador Holter de design moderno, compacto e leve.",
+   "tags": [
+    "Holter digital",
+    "Monitor cardíaco",
+    "Registro contínuo",
+    "Compacto",
+    "Precisão"
+   ],
+   "specs": [
+    "Compatibilidade: Software CardioNet",
+    "Conectividade: USB-C e Infravermelho",
+    "Garantia: 3 anos (equipamento).",
+    "Registro ANVISA: 10361050006"
+   ]
+  },
+  {
+   "nome": "CardioNet Client",
+   "slug": "cardionet-client",
+   "resumo": "Sistema inovador que permite a transferência segura e rápida de exames de Holter e MAPA pela internet, conectando o local da gravação à central de análise, otimizando o fluxo de trabalho.",
+   "tags": [
+    "Software",
+    "Telemedicina",
+    "Alta Precisão",
+    "Transmissão",
+    "Análise"
+   ],
+   "specs": [
+    "Software: Telemedicina",
+    "Compatibilidade: CardioLight, CardioLoop, CardioSeven, CardioMapa, Dyna-MAPA AOP, ARTERIS AOP, Dyna-MAPA NG, Dynamis ECG.",
+    "Conectividade: Internet.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: Não aplicável (Software)."
+   ]
+  },
+  {
+   "nome": "CardioNet DICOM",
+   "slug": "cardionet-dicom",
+   "resumo": "A solução de integração que conecta os exames da Cardios aos sistemas de informação hospitalar (HIS/RIS) e arquivamento de imagens (PACS) através do padrão universal DICOM.",
+   "tags": [
+    "DICOM",
+    "Integração",
+    "Exames",
+    "PACS",
+    "Hospitalar"
+   ],
+   "specs": [
+    "Compatibilidade: CardioNet Client, CardioNet Server, Servidores DICOM (Modality Worklist, C-Store/PACS).",
+    "Conectividade: Rede TCP/IP.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: 10361059003"
+   ]
+  },
+  {
+   "nome": "CardioNet Server",
+   "slug": "cardionet-server",
+   "resumo": "A plataforma completa para centrais de análise receberem, processarem e retornarem laudos de Holter e MAPA pela internet com máxima segurança, agilidade e controle total através do Portal CardioNet.",
+   "tags": [
+    "Software",
+    "Alta Precisão",
+    "Gestão",
+    "Laudos",
+    "Análise"
+   ],
+   "specs": [
+    "Software: Alta Precisão",
+    "Compatibilidade: Exames de: CardioLight, CardioSeven, CardioLoop, CardioMapa, Dyna-MAPA NG, Dyna-MAPA AOP, ARTERIS AOP, Dynamis ECG.",
+    "Conectividade: Internet.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: Não aplicável (Software)."
+   ]
+  },
+  {
+   "nome": "CardioSmart 530",
+   "slug": "cardiosmart-530",
+   "resumo": "Ideal para clínicos e clínicas de pequeno porte, o CardioSmart 530 é um sistema confiável e versátil para a análise de Holter, otimizando o tempo e a segurança nos resultados essenciais do dia a dia.",
+   "tags": [
+    "Holter",
+    "Alta Precisão",
+    "Software",
+    "Análise",
+    "CardioSmart"
+   ],
+   "specs": [
+    "Software: Análise",
+    "Compatibilidade: Módulo Monitor (CardioVista), Módulo Eventos (CardioLoop), Componente de análise de até 7 dias (CardioSeven).",
+    "Conectividade: Análise local em computador.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: 10361050002"
+   ]
+  },
+  {
+   "nome": "CardioSmart 540",
+   "slug": "cardiosmart-540",
+   "resumo": "Destinado a Clínicas e Centros de Análise, o CS 540 expande os recursos do CS 530, oferecendo ferramentas avançadas de visualização, edição e análise para um diagnóstico mais aprofundado e completo.",
+   "tags": [
+    "Alta Precisão",
+    "Holter",
+    "VFC",
+    "Avançado",
+    "Software"
+   ],
+   "specs": [
+    "Software: Solicitar Orçamento",
+    "Compatibilidade: Todos os módulos do 530, mais: Componente VFC/HRV, CardioNet Server e Componente CardioMapa.",
+    "Conectividade: Análise local e envio/recebimento via Internet.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: 10361050002"
+   ]
+  },
+  {
+   "nome": "CardioSmart 550",
+   "slug": "cardiosmart-550",
+   "resumo": "A solução definitiva para Hospitais e Instituições. O CS 550 inclui todos os recursos do 540 e adiciona módulos de alta complexidade para pesquisa e diagnósticos avançados, como análise de Apneia e Fibrilação Atrial.",
+   "tags": [
+    "Holter",
+    "Alta Precisão",
+    "Hospitalar",
+    "Software",
+    "Pesquisa"
+   ],
+   "specs": [
+    "Software: Pesquisa",
+    "Compatibilidade: Todos os módulos disponíveis, incluindo Pacer, Apneia, FA, Turbulência FC, Roll-Over e ECGd.",
+    "Conectividade: Análise local e envio/recebimento via Internet.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: 10361050002"
+   ]
+  },
+  {
+   "nome": "Cubestress System",
+   "slug": "cubestress-system",
+   "resumo": "O Cubestress System é uma solução completa para testes ergométricos, reunindo aquisição de ECG em 12 ou 15 derivações, análise avançada, protocolos configuráveis e integração digital em uma plataforma adaptável a diferentes ambientes clínic",
+   "tags": [
+    "Ergometria",
+    "12/15 derivações",
+    "SENSA",
+    "Modular",
+    "Integração"
+   ],
+   "specs": [
+    "Compatibilidade: Esteiras, cicloergômetros, protocolos genéricos e farmacológicos; ECGWebApp e sistemas hospitalares.",
+    "Conectividade: Bluetooth Low Energy ou USB; integração com HIS, DICOM e HL7."
+   ]
+  },
+  {
+   "nome": "Dyna-MAPA AOP",
+   "slug": "dynamapa-aop",
+   "resumo": "Com o Dyna-MAPA AOP é possível realizar a monitorização ambulatorial de 24h e analisar a saúde da artéria sem a necessidade de um exame invasivo, otimizando o diagnóstico e o tratamento.",
+   "tags": [
+    "MAPA com VOP",
+    "Pressão central",
+    "AOP",
+    "Rigidez Arterial",
+    "Monitor"
+   ],
+   "specs": [
+    "Compatibilidade: Software de análise (vendido separadamente).",
+    "Conectividade: Bluetooth ou Cabo RS232.",
+    "Garantia: 2 anos (equipamento).",
+    "Registro ANVISA: 10361059011"
+   ]
+  },
+  {
+   "nome": "Dyna-MAPA NG",
+   "slug": "dynamapa-ng",
+   "resumo": "A nova geração do consagrado monitor ambulatorial de pressão arterial da Cardios, que une leveza, alta capacidade de memória e protocolos de medição totalmente programáveis.",
+   "tags": [
+    "MAPA",
+    "Leve",
+    "Programável",
+    "Monitor",
+    "Precisão"
+   ],
+   "specs": [
+    "Compatibilidade: Software de análise Cardios.",
+    "Conectividade: Cabo RS232.",
+    "Garantia: 2 anos (equipamento).",
+    "Registro ANVISA: 10361059012"
+   ]
+  },
+  {
+   "nome": "Dynamis ECG",
+   "slug": "dynamis-ecg",
+   "resumo": "O Dynamis ECG é um eletrocardiógrafo médico portátil que permite monitorar a atividade cardíaca, registrar o sinal de ECG com alta amostragem e elaborar laudos de forma integrada ao computador.",
+   "tags": [
+    "Eletrocardiógrafo",
+    "Cardiologia",
+    "ECG",
+    "Portátil",
+    "Digital"
+   ],
+   "specs": [
+    "Compatibilidade: Software Dynamis (Windows 10 ou superior), CardioNet.",
+    "Conectividade: USB 3.0.",
+    "Garantia: 2 anos (equipamento).",
+    "Registro ANVISA: 10361059016"
+   ]
+  },
+  {
+   "nome": "ECG100L",
+   "slug": "ecg100l",
+   "resumo": "O ECG100L é um eletrocardiógrafo de 12 derivações desenvolvido para tornar a aquisição de ECG simples e rápida, combinando tela touchscreen de 5\", impressão integrada e gerenciamento digital dos exames via ECGEasyApp.",
+   "tags": [
+    "12 derivações",
+    "Touchscreen 5\"",
+    "Portátil",
+    "ECGEasyApp",
+    "Mini Holter"
+   ],
+   "specs": [
+    "Compatibilidade: ECGEasyApp para gerenciamento de exames em computador.",
+    "Conectividade: Micro USB / USB para exportação e transferência de exames."
+   ]
+  },
+  {
+   "nome": "ECG200L",
+   "slug": "ecg200l",
+   "resumo": "O ECG200L é um eletrocardiógrafo de 12 derivações desenvolvido para aquisição rápida e confiável, combinando tela touchscreen de 7\", impressão termossensível de 210 mm e gerenciamento dos exames pelo ECGEasyApp.",
+   "tags": [
+    "12 derivações",
+    "Touchscreen 7\"",
+    "210 mm",
+    "Mini Holter",
+    "ECGEasyApp"
+   ],
+   "specs": [
+    "Compatibilidade: ECGEasyApp para gerenciamento dos ECGs em computador.",
+    "Conectividade: Micro USB / USB para exportação e gerenciamento dos exames."
+   ]
+  },
+  {
+   "nome": "Esteira MDX 4.6i",
+   "slug": "esteira-mdx-4.6i",
+   "resumo": "A MDX 4.6i é uma esteira ergométrica preparada para avaliações e testes de esforço, com velocidade de até 25 km/h, motor de 3 cv, inclinação de até 26% e comunicação com sistemas de ergometria.",
+   "tags": [
+    "25 km/h",
+    "3 cv",
+    "Inclinação 26%",
+    "USB",
+    "Ergometria"
+   ],
+   "specs": [
+    "Compatibilidade: Principais sistemas de ergometria disponíveis no mercado.",
+    "Conectividade: USB"
+   ]
+  },
+  {
+   "nome": "HandyMET CLINIC",
+   "slug": "handymet-clinic",
+   "resumo": "O HandyMET CLINIC é um analisador metabólico para teste de esforço cardiopulmonar, calorimetria e avaliação da performance esportiva, com recursos de análise de gases, calibração automática e software dedicado.",
+   "tags": [
+    "Ergoespirometria",
+    "Calorimetria",
+    "VVM",
+    "Metabolismo",
+    "Autocalibração"
+   ],
+   "specs": [
+    "Compatibilidade: Principais sistemas de ergometria do mercado e equipamentos de exercício.",
+    "Conectividade: Integração com equipamentos de exercício e software HandyMET Studio em Windows.",
+    "Software: Especializado"
+   ]
+  },
+  {
+   "nome": "HiCardi",
+   "slug": "hicardi",
+   "resumo": "O HiCardi é um sistema wearable de monitoramento cardíaco por telemetria, desenvolvido para combinar precisão diagnóstica, conectividade e facilidade de uso em uma solução confortável para o paciente e eficiente para a rotina clínica.",
+   "tags": [
+    "Wearable",
+    "Conectividade",
+    "Precisão",
+    "Telemetria",
+    "Conforto"
+   ],
+   "specs": [
+    "Conectividade: Precisão",
+    "Compatibilidade: Plataforma digital de análise HiCardi e fluxos clínicos de telemetria."
+   ]
+  },
+  {
+   "nome": "MAPAs",
+   "slug": "software-mapas",
+   "resumo": "Software completo para análise de hipertensão arterial e onda de pulso, com múltiplas ferramentas de visualização, edição e laudos personalizáveis para um diagnóstico preciso e detalhado.",
+   "tags": [
+    "MAPA",
+    "Hipertensão",
+    "Alta Precisão",
+    "Laudo",
+    "Análise"
+   ],
+   "specs": [
+    "Compatibilidade: Dyna-MAPA NG, Dyna-MAPA AOP, ARTERIS AOP, CardioMapa.",
+    "Conectividade: Análise local em computador.",
+    "Garantia: Não aplicável (Software).",
+    "Registro ANVISA: Não aplicável (Software)."
+   ]
+  },
+  {
+   "nome": "Tango M2",
+   "slug": "tango-m2",
+   "resumo": "O Tango M2 é um monitor automático de pressão arterial desenvolvido especificamente para testes de estresse cardíaco e ergométricos, oferecendo medições confiáveis mesmo diante de movimento, vibração e esforço físico.",
+   "tags": [
+    "Pressão arterial",
+    "Ergometria",
+    "Precisão",
+    "Automação",
+    "Integração"
+   ],
+   "specs": [
+    "Compatibilidade: Sistemas de ECG de esforço e protocolos com esteira, ergômetro ou estresse farmacológico.",
+    "Conectividade: RS-232, BNC e USB.",
+    "Garantia: 2 anos no monitor."
+   ]
+  },
+  {
+   "nome": "touchECG Windows",
+   "slug": "touchecg-windows",
+   "resumo": "O touchECG Windows é uma solução PC-ECG de alto desempenho com aquisição de 12 ou 15 derivações, conectividade sem fio, visualização em tempo real e integração com sistemas hospitalares e plataformas digitais de gerenciamento de ECG.",
+   "tags": [
+    "12/15 derivações",
+    "Wireless",
+    "DICOM",
+    "ECGWebApp",
+    "Telemedicina"
+   ],
+   "specs": [
+    "Compatibilidade: Windows 10/11, ECGWebApp, PACS e HIS hospitalares.",
+    "Conectividade: Bluetooth Low Energy (BLE) e USB opcional; DICOM bidirecional opcional."
+   ]
+  },
+  {
+   "nome": "Walk Free",
+   "slug": "walk-free",
+   "resumo": "O Walk Free é um gravador Holter tipo patch de 3 canais, totalmente sem cabos, desenvolvido para monitorizações prolongadas com conforto, discrição e liberdade de movimento por até nove dias.",
+   "tags": [
+    "Sem cabos",
+    "3 canais",
+    "Até 9 dias",
+    "30 g",
+    "Telemedicina"
+   ],
+   "specs": [
+    "Compatibilidade: Cubeholter, Device Web Manager e ECGWebApp Holter.",
+    "Conectividade: USB 2.0 e Bluetooth 4.0."
+   ]
+  }
+ ],
+ "faq": [
+  {
+   "id": "holter-cartao-memoria",
+   "categoria": "Holter",
+   "produtos": [
+    "CardioLight",
+    "CardioLight+",
+    "CardioLoop"
+   ],
+   "titulo": "O cartão do meu Holter não grava, dá erro de leitura ou o exame não abre no aplicativo",
+   "volume": "389 casos em 3 meses — maior tema isolado de todo o suporte técnico",
+   "video": "https://www.youtube.com/watch?v=GEi-F9ate28",
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nO cartão SD do seu gravador Holter (CardioLight, CardioLight+ ou CardioLoop) é o que armazena o exame **e** configura o aparelho. A maioria dos problemas de leitura/gravação cai em uma destas causas:\n\n1. **Cartão de outro produto ou comprado fora da Cardios.** O gravador só é compatível com os cartões SD fornecidos pela Cardios para aquele modelo específico — cartões de outros produtos Cardios (ex: um cartão de MAPA num Holter) ou cartões comuns de loja não funcionam.\n2. **Cartão não preparado antes do uso.** O cartão precisa ser preparado no **CardioSmart** ou **CardioNet** (com os dados do exame/paciente) antes de ser inserido no gravador. Um cartão \"cru\" não vai gravar corretamente.\n3. **Encaixe invertido.** O encaixe do cartão deve seguir a orientação indicada no gravador (observe os pontos/marcas de referência) — inserir invertido pode danificar o cartão ou o próprio aparelho.\n4. **Cartão usado para outra finalidade.** Nunca grave fotos ou outros arquivos no cartão do Holter — isso pode corromper os dados do exame.\n\n## Passo a passo para orientar o cliente\n\n1. Confirme o modelo do gravador (CardioLight, CardioLight+ ou CardioLoop) — os cartões não são intercambiáveis entre modelos.\n2. Confirme se o cartão foi preparado no CardioSmart/CardioNet antes de ser colocado no gravador.\n3. Peça para reinserir o cartão observando a orientação correta (ver manual, seção \"Cartão SD\").\n4. Se o problema persistir mesmo com cartão original, preparado corretamente e bem encaixado, é caso de **encaminhar para o suporte técnico** — pode ser defeito físico do cartão ou do leitor do gravador.\n\n## Quando escalar para atendimento humano\n\n- Cliente já confirmou que o cartão é original, foi preparado corretamente e está bem encaixado, e o erro persiste.\n- Suspeita de defeito de hardware (cartão ou gravador).\n- Cliente com prazo urgente de laudo (Assistência Técnica pode ter fila — sinalizar prioridade).\n\n## Fonte / observações\n\nConteúdo baseado no Manual do Usuário CardioLight (seção 2.8 \"Cartão SD\") e no procedimento de encaixe do Manual do Usuário CardioLoop (1º e 2º passo de instalação). Vídeo de treinamento \"Série Equipamentos - Cardiolight\" cobre o manuseio geral do gravador."
+  },
+  {
+   "id": "holter-duvida-utilizacao",
+   "categoria": "Holter",
+   "produtos": [
+    "CardioLight",
+    "CardioLight+",
+    "CardioLoop",
+    "Cardioseven"
+   ],
+   "titulo": "Como instalar corretamente o Holter no paciente (eletrodos, cabo, botão)",
+   "volume": "288 casos em 3 meses (Holter + Dúvida de utilização)",
+   "video": "https://www.youtube.com/watch?v=4w-uK-WhIUU",
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nA qualidade do exame de Holter depende diretamente da preparação da pele e da colocação correta dos eletrodos. Os pontos que mais geram dúvida:\n\n1. **Preparação da pele** — antes de colocar os eletrodos:\n   - **Depilação** da área (mesmo pouco pelo já prejudica o contato elétrico);\n   - **Limpeza da pele** com gaze e álcool etílico 70% para remover a gordura superficial;\n   - **Escarificação leve** para remover células mortas da pele — garante melhor contato elétrico.\n2. **Cabo de paciente** — conferir que está corretamente conectado ao gravador antes de iniciar a gravação.\n3. **Botão multifuncional / indicadores (LED e sonoro)** — usados para marcar eventos e verificar o status do gravador durante o exame; confirmar com o cliente se ele sabe interpretar os sinais.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar em qual etapa o cliente está com dúvida: preparação do paciente, conexão do cabo, ou leitura dos indicadores.\n2. Para preparação de pele: reforçar a sequência depilação → limpeza com álcool 70% → leve escarificação.\n3. Para cabo de paciente: confirmar encaixe correto no gravador e nos eletrodos.\n4. Para indicadores: consultar a tabela de sinalização de erros do manual do modelo específico.\n\n## Quando escalar para atendimento humano\n\n- Dúvida persiste após orientação de preparação de pele/cabo (pode indicar defeito no cabo ou no gravador).\n- Erro sinalizado pelo LED/indicador sonoro que não está documentado na resposta padrão.\n\n## Fonte / observações\n\nProcedimento de preparação de pele extraído do Manual do Usuário CardioLoop (3º passo de instalação). Vídeo \"Holter na Prática Clínica: Dicas Essenciais\" cobre uso clínico mais aprofundado e pode ser indicado para médicos/técnicos que queiram se aprofundar."
+  },
+  {
+   "id": "mapa-bluetooth",
+   "categoria": "MAPA",
+   "produtos": [
+    "Dyna-MAPA AOP",
+    "Dyna-MAPA NG"
+   ],
+   "titulo": "Como configurar/conectar o MAPA por Bluetooth",
+   "volume": "32 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nO Dyna-MAPA AOP (e modelos equivalentes) pode se comunicar com o computador por **cabo/interface serial** ou por **Bluetooth** — é preciso selecionar a interface correta no próprio aparelho antes de tentar conectar.\n\n## Passo a passo para orientar o cliente\n\n1. Com o monitor **desligado**, garantir que não há cabo/adaptador USB conectado (a troca de interface é feita com o monitor desligado).\n2. Ligar o monitor e, com o equipamento ligado, pressionar simultaneamente as teclas indicadas no manual até o visor mostrar o menu de interface.\n3. Navegar até a opção Bluetooth e confirmar a seleção.\n4. No computador, parear o Bluetooth do monitor como um novo dispositivo (o pareamento aparece no software de configuração, ex: CardioSmart).\n\n## Quando escalar para atendimento humano\n\n- Aparelho não entra no menu de seleção de interface (pode indicar problema de firmware/hardware).\n- Pareamento Bluetooth aparece no Windows mas o software Cardios não reconhece o dispositivo.\n- Bateria fraca — o manual recomenda conferir a tensão mínima das pilhas antes de diagnosticar como problema de conexão (pilhas NiMH devem estar ≥ 2,75V após remoção do carregador).\n\n## Fonte / observações\n\nProcedimento de seleção de interface Bluetooth extraído do Manual do Usuário Dyna-MAPA AOP (seção de configuração do monitor). Vale confirmar com o Filipe se o passo a passo exato de teclas é o mesmo em todos os modelos Dyna-MAPA em campo hoje, já que pode variar por versão de firmware."
+  },
+  {
+   "id": "mapa-cabo-usb-rs232",
+   "categoria": "MAPA",
+   "produtos": [
+    "CardioMAPA",
+    "Dyna-MAPA AOP",
+    "Dyna-MAPA NG"
+   ],
+   "titulo": "O computador não reconhece o cabo/adaptador RS232-USB do meu MAPA",
+   "volume": "88 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nA causa mais comum de falha de conexão do cabo adaptador RS232/USB é o **driver não instalado corretamente** ou o **Windows atribuindo a porta COM errada**. Passos:\n\n1. Confirmar que o driver do Cabo Adaptador RS232/USB foi instalado (CD/instalador que acompanha o acessório).\n2. Se o cliente também usa o Adaptador IR/USB (para gravadores digitais de Holter) no mesmo computador, atenção: **cada adaptador deve ficar sempre na mesma porta USB física** — se for trocado de porta, o Windows atribui uma nova porta COM e a configuração do software (CardioSmart) precisa ser refeita.\n3. Verificar no Gerenciador de Dispositivos do Windows qual porta COM foi atribuída ao adaptador, e conferir se essa é a mesma porta selecionada no CardioSmart.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar se o cabo já funcionou antes ou se é a primeira instalação.\n2. Se for a primeira vez: confirmar instalação do driver específico do Cabo Adaptador RS232/USB (não confundir com o driver do Adaptador IR/USB — são drivers diferentes).\n3. Se já funcionou antes e parou: perguntar se o cabo foi trocado de porta USB, ou se outro adaptador Cardios foi conectado depois. Orientar a reconectar na mesma porta original ou reconfigurar a porta COM no CardioSmart.\n4. Confirmar compatibilidade do sistema operacional (driver homologado para Windows; versões muito antigas ou muito novas podem exigir atenção extra — validar com suporte técnico se necessário).\n\n## Quando escalar para atendimento humano\n\n- Driver instalado corretamente, porta COM confirmada, e ainda assim sem comunicação — pode ser defeito no cabo ou na porta do monitor.\n- Cliente em sistema operacional não coberto pela documentação atual (confirmar compatibilidade com o time técnico).\n\n## Fonte / observações\n\nBaseado no guia rápido \"QuickSteps Cabo Adaptador RS232/USB e Adaptador IR/USB\" (nota importante sobre troca de porta COM) e nos acessórios listados no Manual do Usuário Dyna-MAPA AOP (Adaptador RS-232/USB)."
+  },
+  {
+   "id": "mapa-duvida-utilizacao",
+   "categoria": "MAPA",
+   "produtos": [
+    "CardioMAPA",
+    "Dyna-MAPA AOP",
+    "Dyna-MAPA NG"
+   ],
+   "titulo": "Dúvidas gerais de uso do MAPA (manguito, função dia/noite, desligar)",
+   "volume": "66 casos em 3 meses (MAPA + Dúvida de utilização)",
+   "video": "https://www.youtube.com/watch?v=cfPMaHNBcDw",
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nDúvidas de uso do MAPA costumam cair em três pontos: **colocação do manguito**, **função Dia/Noite** (que ajusta a frequência de medições conforme o período do paciente) e **como desligar o aparelho corretamente** ao final do exame.\n\n## Passo a passo para orientar o cliente\n\n1. Perguntar qual é a dúvida específica: colocação do manguito, ajuste do dia/noite, ou finalização do exame.\n2. Manguito: confirmar o tamanho correto (o kit padrão acompanha manguito tamanho médio 24-32cm) e a posição no braço conforme o manual.\n3. Dia/Noite: explicar que essa função ajusta os intervalos de medição automaticamente e pode ser configurada antes de instalar o aparelho no paciente.\n4. Desligamento: orientar a sequência correta de desligar pelo teclado, para não perder dados do exame já gravado.\n\n## Quando escalar para atendimento humano\n\n- Cliente com dúvida sobre configuração específica que não está coberta aqui (ex: parâmetros clínicos de medição) — direcionar para o vídeo de treinamento completo ou para a central de suporte.\n\n## Fonte / observações\n\nBaseado no Manual do Usuário CardioMapa (seções \"Teclado\" e \"A função Dia/Noite\"). Vídeo de treinamento \"Manuseio do CardioMAPA e Preparação do Cartão\" cobre esse fluxo com demonstração visual."
+  },
+  {
+   "id": "cardionet-conexao-cnet",
+   "categoria": "CardioNet",
+   "produtos": [
+    "CardioNet Client",
+    "CardioNet Server",
+    "Portal CardioNet"
+   ],
+   "titulo": "O CardioNet não conecta / exame não sobe para o Portal CardioNet",
+   "volume": "102 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nFalha de conexão do CardioNet costuma ser um destes três casos:\n\n1. **Sem acesso à internet** no computador onde o Client/Server está instalado (checar navegação básica primeiro).\n2. **Firewall/antivírus corporativo bloqueando** a comunicação do software com o servidor Cardios.\n3. **Credencial incorreta ou expirada** — as credenciais de conexão são as mesmas da conta do serviço de saúde no Portal CardioNet.\n\n## Passo a passo para orientar o cliente\n\n1. Confirmar se o computador tem internet funcionando normalmente (fora do CardioNet).\n2. Pedir para tentar acessar o Portal CardioNet pelo navegador com as mesmas credenciais — se não conseguir logar ali também, é problema de credencial, não de conexão do software.\n3. Se o portal abre normalmente mas o software não conecta, orientar a checar com o TI do cliente se há bloqueio de firewall/antivírus.\n\n## Quando escalar para atendimento humano\n\n- Portal acessível e credenciais corretas, mas o software Client/Server continua sem conectar.\n- Suspeita de bloqueio de rede que o cliente não consegue resolver sozinho (nível 1 não deve tentar abrir portas remotamente).\n\n## Fonte / observações\n\n⚠️ Este artigo foi montado com base no que já sabíamos do projeto de integração CardioNet/DICOM (não é um manual de troubleshooting oficial) — é o que mais precisa da revisão do Filipe antes de virar conteúdo final, incluindo confirmar quais portas/URLs específicas costumam ser bloqueadas."
+  },
+  {
+   "id": "cardionet-configurar-analista",
+   "categoria": "CardioNet",
+   "produtos": [
+    "CardioNet Client"
+   ],
+   "titulo": "Como configurar o analista/central de análise de destino no CardioNet",
+   "volume": "122 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nO CardioNet Client precisa saber para qual central de análise (analista) cada exame deve ser enviado. Quando o cliente troca de central de análise, ou atende mais de uma, é comum surgir dúvida em como configurar/trocar esse destino no software.\n\n## ⚠️ Pontos que precisam de confirmação técnica antes de virar resposta final\n- Tela exata e nome do menu onde se configura o analista/central de destino na versão atual do CardioNet Client.\n- Se a configuração é por exame individual ou por perfil padrão do Client.\n- Se existe algum cadastro prévio necessário (pelo Portal CardioNet ou pela própria central de análise) antes de aparecer como opção no software.\n\n## Quando escalar para atendimento humano\n\n- Qualquer configuração de analista que não seja a simples troca de destino já cadastrado — por ora, tratar como caso para o suporte técnico até este artigo ser validado.\n\n## Fonte / observações\n\nEste é o artigo com menos base documental hoje — a ficha técnica disponível não detalha esse fluxo de configuração. **Prioridade alta para revisão com o Filipe**, dado o volume (122 casos em 3 meses)."
+  },
+  {
+   "id": "cardionet-instalacao",
+   "categoria": "CardioNet",
+   "produtos": [
+    "CardioNet Client",
+    "CardioNet Server"
+   ],
+   "titulo": "Como instalar o CardioNet (Client/Server) e principais erros de instalação",
+   "volume": "208 casos em 3 meses — 2º maior tema depois do cartão do Holter",
+   "video": "https://www.youtube.com/watch?v=Onu59nKFLc4",
+   "corpo": "## O que é o CardioNet (contexto para quem for responder)\n\nO CardioNet é o software de transmissão de exames de Holter e MAPA via Internet, dispensando a troca física de cartão de memória entre quem grava o exame e quem analisa (central de análise). Ele transmite exames gravados nos aparelhos CardioLight, CardioLoop, CardioSeven, CardioMapa, Dyna-MAPA AOP, Dyna-MAPA NG, ARTERIS AOP e Dynamis ECG. Existem duas pontas do software:\n\n- **CardioNet Client** — instalado no local que grava e envia o exame (consultório, clínica, hospital).\n- **CardioNet Server** — instalado na central de análise, que recebe os exames enviados.\n\nAmbos dependem também do **Portal CardioNet** (área web) para consulta de relatórios e estatísticas de transmissão. Existem ainda duas variantes que **não** seguem este mesmo passo a passo e merecem ser identificadas logo no início do atendimento, para não gerar diagnóstico errado:\n\n- **CardioNet Mobile** — acesso a laudos por celular/tablet, não faz a transmissão do exame em si.\n- **CardioNet DICOM** — integração com sistemas PACS de clínicas/hospitais (exporta o exame em formato DICOM); é um fluxo de integração de TI, não uma instalação padrão de posto de coleta.\n\n## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\n1. Confirmar qual dos dois o cliente está instalando: **Client** (quem grava/envia) ou **Server** (quem recebe/analisa) — os instaladores e o fluxo de configuração inicial são diferentes. Se o cliente mencionar PACS/DICOM ou app de celular, é um fluxo diferente (ver acima) — não tentar resolver como instalação padrão.\n2. Confirmar que o computador tem acesso à Internet liberado para o software (portas/URLs do CardioNet não devem estar bloqueadas por firewall/antivírus corporativo). CardioNet não exige IP fixo — se o cliente estiver tentando configurar IP fixo por conta própria, isso não é um requisito do software.\n3. Confirmar que o cliente tem as credenciais do Portal CardioNet em mãos — são as mesmas usadas para a conta do serviço de saúde no portal.\n\n## Quando escalar para atendimento humano\n\n- Qualquer erro de instalação que não seja \"sem internet\", \"sem credencial\" ou \"produto errado (Mobile/DICOM confundido com instalação padrão)\" — nível 1 não deve tentar diagnosticar erros de instalador sem checklist validado.\n- Qualquer menção a integração DICOM/PACS — encaminhar direto para o time técnico, é fora do escopo de instalação padrão.\n- Se não resolver por chat/bot: SSC (Serviço de Suporte ao Cliente) 11 3883-3010, ou Geral/WhatsApp 11 3883-3000.\n\n## ⚠️ Pontos que ainda precisam de confirmação técnica com o Filipe antes de publicar\n\n- Passo a passo exato do instalador atual (tela a tela) — os anexos técnicos disponíveis são fichas comerciais, não um guia de instalação passo a passo.\n- Requisitos de sistema operacional/hardware atualizados (o que está documentado é antigo).\n- Lista de URLs/portas que precisam estar liberadas no firewall, para orientar o TI do cliente.\n\nNão incluímos números ou passos específicos para esses três pontos porque não há fonte confiável disponível ainda — preferimos deixar em aberto a arriscar uma instrução técnica incorreta.\n\n## Fonte / observações\n\nBaseado nas fichas técnicas comerciais do CardioNet Client/Server e no Folheto CardioNet (que também é a fonte dos telefones de contato). **Este artigo precisa de uma passada com o Filipe** para o passo a passo do instalador virar um guia completo — hoje cobre bem a triagem (o quê, qual variante, quando escalar), mas não o \"como instalar tela a tela\"."
+  },
+  {
+   "id": "cardionet-reset-senha",
+   "categoria": "CardioNet",
+   "produtos": [
+    "Portal CardioNet"
+   ],
+   "titulo": "Esqueci/preciso trocar a senha do Portal CardioNet",
+   "volume": "16 casos em 3 meses — tema novo, bom candidato a resposta 100% automática",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem) — versão preliminar\n\nAs credenciais de acesso ao Portal CardioNet são as mesmas da conta do serviço de saúde do cliente. Este é um dos temas mais simples de resolver 100% pelo bot, sem precisar de atendente — vale ser um dos primeiros fluxos totalmente automatizados.\n\n## ⚠️ Pontos que precisam de confirmação técnica antes de virar resposta final\n- URL exata da tela de \"esqueci minha senha\" do Portal CardioNet.\n- Se a recuperação é por e-mail cadastrado, ou se depende de contato com o suporte para reset manual.\n- Se há um responsável/administrador por conta que pode resetar a senha de outros usuários da mesma clínica.\n\n## Quando escalar para atendimento humano\n\n- Cliente não tem mais acesso ao e-mail cadastrado.\n- Conta bloqueada por tentativas — pode exigir reset manual pelo suporte.\n\n## Fonte / observações\n\nAssim que o fluxo de recuperação for confirmado com o Filipe, este artigo tem potencial de virar uma resposta 100% automática do bot (sem necessidade de atendente humano) — baixo volume mas alta automatização possível."
+  },
+  {
+   "id": "cardiosmart-diferencas-versoes",
+   "categoria": "CardioSmart",
+   "produtos": [
+    "CardioSmart 530",
+    "CardioSmart 540",
+    "CardioSmart 550"
+   ],
+   "titulo": "Quais as diferenças entre as versões do CardioSmart (530, 540 e 550)?",
+   "volume": "209 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nO CardioSmart é vendido em 3 níveis de software — **530 (Básico)**, **540** e **550 (mais completo)** — que diferem na profundidade de análise e nos módulos incluídos, não no exame em si (todos leem CardioLoop, CardioSeven e CardioMapa):\n\n- **CS530 (Básico)**: cobre o essencial — visualização e edição do exame, medições, relatório e gráfico de 24h — mas com cursores e pop-up de dados no nível básico (1 tipo), sem sumário tabular inteligente, sem múltiplos cabeçalhos/logotipos, sem tacograma/histogramas/variabilidade RR.\n- **CS540**: tudo do 530 + recursos avançados de análise (cursores e pop-up avançados com 4 tipos, sumário tabular com link ao ECG comprimido/zoom/24h, histogramas, múltiplos cabeçalhos e logotipos, tacograma de intervalos RR, variabilidade RR, banco de frases avançado).\n- **CS550 (completo)**: tudo do 540 + os recursos mais avançados — sumário tabular inteligente com link direto aos eventos, Roll-Over, ECGd sob demanda — e é o único nível que já inclui, como parte do software, os módulos de Apneia, Fibrilação Atrial, Pacer (marcapasso), TFC (turbulência da FC) e **CardioNet Server** (transmissão dos exames via Internet).\n\n## Passo a passo para orientar o cliente\n\n1. Pergunte qual versão o cliente tem instalada hoje (530, 540 ou 550) — geralmente aparece na tela inicial do CardioSmart.\n2. Identifique qual recurso específico o cliente está procurando e não encontra (ex: tacograma, sumário tabular, Apneia) e confira contra a lista acima em qual(is) versão(ões) ele está disponível.\n3. Se o recurso só existir em uma versão superior à que o cliente tem, explique que é uma diferença de licenciamento entre os níveis do software, não um defeito, e encaminhe para o **Comercial** (planos e upgrade de versão) — fora do escopo do Suporte Técnico.\n4. Apneia, Fibrilação Atrial, Pacer, TFC e CardioNet Server também podem ser contratados como módulos adicionais mesmo fora do CS550, conforme o folheto — vale confirmar com o Comercial antes de afirmar que \"só existe no 550\".\n\n## Quando escalar para atendimento humano\n\n- Cliente quer fazer upgrade de versão ou contratar um módulo adicional — é conversa comercial, não suporte técnico.\n- Dúvida sobre se um recurso específico está ou não incluído no contrato do cliente (o folheto mostra o padrão de mercado, não o que cada cliente especificamente contratou).\n\n## Fonte / observações\n\nTabela comparativa extraída do Folheto CardioSmart oficial (REV015, 04/2025) — \"recursos disponíveis para os 3 níveis de software\". Módulos com asterisco no material comercial (Apneia, Fibrilação Atrial, Pacer, CardioNet Server, CardioNet DICOM) podem ser acrescentados posteriormente quando não incluídos no nível de software escolhido, conforme nota do próprio folheto. O \"CardioNet\" citado como módulo do CardioSmart é o **CardioNet Server** (recebe/analisa exames transmitidos) — distinto do CardioNet Client (quem grava/envia) e do CardioNet DICOM (integração com PACS), já diferenciados no artigo de instalação do CardioNet."
+  },
+  {
+   "id": "pressao-central-erro-comunicacao",
+   "categoria": "Pressão Central",
+   "produtos": [
+    "Arteris AOP"
+   ],
+   "titulo": "O Arteris AOP não conecta ou dá erro de comunicação (Bluetooth)",
+   "volume": "140 casos em 3 meses",
+   "video": null,
+   "corpo": "## Resposta rápida (bot / primeira mensagem)\n\nO Arteris AOP se conecta ao aplicativo por **Bluetooth** (a interface por infravermelho do aparelho existe fisicamente, mas não é utilizada). Quando o monitor mostra um erro de comunicação, ele exibe um código (Cod 1 a Cod 8) que já indica a causa provável:\n\n- **Cod 1** — Erro durante o pareamento, ou o equipamento remoto (celular/tablet) foi desligado. Orientação: refazer o pareamento e religar o equipamento remoto.\n- **Cod 2** — Bluetooth desligado ou fora de alcance. Orientação: verificar se o Bluetooth do equipamento remoto está ligado e por perto.\n- **Cod 3** — Falha ao enviar as medidas. Orientação: fazer uma nova medição e verificar se ela é enviada.\n- **Cod 4** — Erro de comunicação (genérico). Orientação: repetir o teste; se persistir, é caso de suporte técnico.\n- **Cod 5** — Dado inválido na memória. Orientação: repetir o teste; se persistir, é caso de suporte técnico.\n- **Cod 6** — Erro no circuito de comunicação. Orientação: repetir o teste; se persistir, é caso de suporte técnico.\n- **Cod 7** — Memória cheia. Orientação: repetir o teste; se persistir, é caso de suporte técnico.\n- **Cod 8** — Outro erro não classificado. Orientação: repetir o teste; se persistir, é caso de suporte técnico.\n\n## Passo a passo para orientar o cliente\n\n1. Peça o código exato do erro mostrado no visor do monitor (Cod 1 a 8).\n2. Para Cod 1 ou Cod 2: oriente refazer o pareamento Bluetooth com o equipamento remoto e confirmar que ele está ligado, com Bluetooth ativo e por perto do monitor.\n3. Para Cod 3: peça para repetir a medição e conferir se ela é transmitida normalmente desta vez.\n4. Para Cod 4 a Cod 8: se o erro se repetir mais de uma vez mesmo após reiniciar o processo, é caso de encaminhar para o suporte técnico — o próprio manual orienta isso para esses códigos.\n\n## Quando escalar para atendimento humano\n\n- Qualquer código (Cod 4 a 8) que se repita após o cliente tentar novamente.\n- Cod 1/2/3 que persistam mesmo depois de reparear e confirmar Bluetooth ligado — pode ser o mesmo padrão de defeito de conectividade já registrado publicamente para este equipamento.\n- Cliente com prazo urgente de laudo.\n\n## Fonte / observações\n\nCódigos de erro extraídos literalmente da seção 8.1 \"Erro de comunicação\" do Manual do Usuário ARTERIS AOP (VER003-FEV2025). A interface infravermelho do aparelho (seção 2.6 do manual) está presente no hardware mas não é utilizada — a conexão real é sempre via Bluetooth."
+  },
+  {
+   "id": "ecg-instalacao-preparacao",
+   "categoria": "ECG",
+   "produtos": [
+    "Dynamis"
+   ],
+   "titulo": "Como preparar o paciente e instalar corretamente o Dynamis (ECG de repouso)",
+   "volume": "92 casos em 3 meses",
+   "video": null,
+   "corpo": "## O que é o Dynamis (contexto para quem for responder)\n\nO Dynamis é o eletrocardiógrafo de repouso da Cardios, conectado ao computador do cliente por **cabo USB** — diferente dos gravadores ambulatoriais (Holter) como CardioLight/CardioLoop/CardioSeven, que o paciente carrega consigo por dias. O Dynamis não usa cartão de memória: ele transmite o exame ao vivo para o computador durante a coleta, então a maior parte dos problemas relatados é de conexão/reconhecimento do equipamento, não de gravação.\n\n## Resposta rápida (bot / primeira mensagem)\n\n- **Requisitos mínimos do computador**: Windows 10 (a partir da versão 21H1) ou Windows 11, processador dual core ou superior, placa de vídeo compatível com DirectX 9/OpenGL (mínimo 256 MB), 4 GB de RAM, 500 GB de disco, resolução mínima 1280x1024 (desktop) ou 1336x768 (notebook), porta USB 2.0 ou superior. O Dynamis é alimentado só pelo cabo USB — não tem fonte de alimentação própria.\n- **\"O ECG não liga\" ou \"o software não reconhece o equipamento\"**: verificar se o cabo USB está bem encaixado nas duas pontas (computador e aparelho) e se não está danificado; testar outra porta USB do computador.\n- **Mensagens como \"não foi possível encontrar a porta de comunicação\" ou \"não foi possível conectar o eletrocardiógrafo\"**: fechar o aplicativo, reconectar o cabo USB, e abrir o aplicativo novamente.\n- **Preparação do paciente**: deitado, monitor em ângulo de 90°, tórax/pulsos/braços livres de joias — a Cardios não fornece os eletrodos, são de responsabilidade do cliente.\n- **Código de cores dos eletrodos** (12 derivações): preto = perna direita (ou parte inferior direita do abdômen); vermelho = braço direito; branco/vermelho = 4º espaço intercostal direito junto ao esterno; branco/amarelo = 4º espaço intercostal junto ao esterno; branco/verde = ponto médio entre C2 e C4; branco/marrom = espaço intercostal esquerdo.\n\n## Passo a passo para orientar o cliente\n\n1. Confirmar que o cabo USB está firme nas duas pontas e testar outra porta USB do computador caso o equipamento não ligue.\n2. Se aparecer mensagem de erro de porta de comunicação ou de conexão com o eletrocardiógrafo: orientar fechar o aplicativo, reconectar o cabo USB e abrir o aplicativo de novo.\n3. Confirmar que o computador atende aos requisitos mínimos (Windows 10 21H1+/11, 4 GB RAM, USB 2.0+) — softwares desatualizados ou hardware abaixo do requisito também podem causar falha de reconhecimento.\n4. Para dúvida de posicionamento de eletrodos, usar o código de cores acima; reforçar que o paciente deve estar deitado, com o monitor a 90° e sem joias no tórax/pulsos/braços.\n\n## Quando escalar para atendimento humano\n\n- Mensagem de erro de conexão que persiste mesmo depois de reconectar o cabo USB e reabrir o aplicativo — o próprio manual já orienta acionar a assistência técnica nesse ponto.\n- Suspeita de defeito de hardware (cabo ou eletrocardiógrafo).\n\n## Fonte / observações\n\nRequisitos de sistema e tabela de resolução de problemas extraídos das seções \"5.2. Requisitos do Sistema\" e \"8.3. Resolução de problemas\" do Manual do Usuário Dynamis ECG. Código de cores dos eletrodos extraído da seção \"7.1. Preparação do paciente\" do mesmo manual.\n\n**Nota de categorização**: o CardioSeven, apesar do nome, é um gravador ambulatorial (Holter) de até 7 dias — como o CardioLight/CardioLoop, só que com duração maior — e não um eletrocardiógrafo de repouso. Por isso não é tratado neste artigo; sua instalação já é coberta no artigo de instalação de Holter (categoria Holter, junto com CardioLight/CardioLight+/CardioLoop)."
+  }
+ ]
+}
