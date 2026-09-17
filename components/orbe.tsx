@@ -172,3 +172,24 @@ export function Orbe({
     />
   );
 }
+
+/**
+ * O orbe em dois tamanhos, trocados pelo breakpoint.
+ *
+ * Existe porque o canvas é desenhado em pixel, não escalado: reduzir por CSS
+ * borraria os pontos. São duas instâncias, e só uma está no fluxo por vez.
+ */
+export function OrbeResponsivo({
+  pequeno, grande, ...resto
+}: Omit<Parameters<typeof Orbe>[0], "tamanho"> & { pequeno: number; grande: number }) {
+  return (
+    <>
+      <span className="sm:hidden">
+        <Orbe tamanho={pequeno} {...resto} />
+      </span>
+      <span className="hidden sm:block">
+        <Orbe tamanho={grande} {...resto} />
+      </span>
+    </>
+  );
+}

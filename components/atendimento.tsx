@@ -7,13 +7,14 @@
  * No desktop a configuração é uma coluna à direita; no celular ela cobre a tela,
  * porque 440 px de painel ao lado de 390 px de viewport não existe.
  */
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Check, Copy, Mic, PhoneOff, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/beat";
 import { PainelConfig } from "@/components/painel-config";
 import { Transcricao } from "@/components/transcricao";
 import { MedidorCusto } from "@/components/medidor-custo";
-import { Orbe } from "@/components/orbe";
+import { OrbeResponsivo } from "@/components/orbe";
 import { useAtendimento } from "@/lib/useAtendimento";
 import { paraTexto } from "@/lib/falas";
 import { CONFIG_PADRAO, gravarConfig, lerConfig, pareceChave, type Config } from "@/lib/config";
@@ -149,6 +150,23 @@ export function Atendimento() {
 
             {estado === "parado" && falas.length === 0 && (
               <div className="flex flex-col items-center text-center">
+                {/* O lockup oficial, o mesmo do cardios.com.br. Vertical e de
+                    três níveis, então abaixo de uns 44 px de altura o
+                    "CARDIOLINE" fica ilegível. */}
+                <Image
+                  src="/marca/logo-cardios.png"
+                  alt="Cardios Cardioline"
+                  width={378}
+                  height={359}
+                  priority
+                  className="mb-7 h-12 w-auto sm:h-14"
+                />
+                {/* Parada, a Clara respira: uma senoide lenta, sem áudio
+                    nenhum. É o mesmo componente da ligação, e é o que faz a
+                    tela inicial já dizer que ali se fala com alguém. */}
+                <div className="mb-2">
+                  <OrbeResponsivo pequeno={148} grande={188} lerNiveis={lerNiveis} falando={null} />
+                </div>
                 <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                   Fale com a {NOME_ATENDENTE}
                 </h2>
@@ -249,16 +267,10 @@ function Disco({
 
   return (
     <div className="flex flex-col items-center py-2">
-      <div className="grid place-items-center">
-        {/* Dois tamanhos porque o orbe é desenhado em pixel, não escalado:
-            reduzir por CSS borraria os pontos. */}
-        <span className="sm:hidden">
-          <Orbe tamanho={124} lerNiveis={lerNiveis} falando={falando} conectando={estado === "conectando"} />
-        </span>
-        <span className="hidden sm:block">
-          <Orbe tamanho={156} lerNiveis={lerNiveis} falando={falando} conectando={estado === "conectando"} />
-        </span>
-      </div>
+      <OrbeResponsivo
+        pequeno={124} grande={156}
+        lerNiveis={lerNiveis} falando={falando} conectando={estado === "conectando"}
+      />
       <p aria-live="polite" className="mt-2 text-sm text-muted-foreground">{legenda}</p>
     </div>
   );

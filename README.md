@@ -42,9 +42,12 @@ já está isolada em `lib/conhecimento/index.ts`.
 
 ## O orbe
 
-Durante a ligação, no lugar de um indicador estático, roda uma esfera de 700
-pontos que gira e reage ao áudio de verdade. Laranja quando a Clara fala, navy
-quando é você.
+Uma esfera de 700 pontos que gira e reage ao áudio de verdade. Laranja quando a
+Clara fala, navy quando é você.
+
+Ela abre a tela inicial, junto com o lockup da Cardios, respirando numa senoide
+lenta sem áudio nenhum: é o mesmo componente da ligação, e é o que faz a página
+já dizer que ali se fala com alguém em vez de se preencher um formulário.
 
 A voz não move o ponto diretamente: ela escala a amplitude de uma onda que
 corre pela superfície da esfera. É o que faz o orbe respirar em vez de pulsar.
