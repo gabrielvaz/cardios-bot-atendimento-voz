@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oito variantes da esfera de pontos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --marca:#ee5b00; --marca-claro:#ff8c42; --navy:#071046; --lavanda:#ab8ed3;
+    --fundo:#fff; --papel:#fff; --tinta:#333; --fraca:#747474; --linha:#e5e7eb;
+  }
+  body.escuro{--fundo:#0b0d10; --papel:#14171c; --tinta:#e8e8e8; --fraca:#9aa0a6; --linha:#262b33}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--fundo);color:var(--tinta);
+       -webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+  header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fundo) 88%,transparent);
+         backdrop-filter:blur(12px);border-bottom:1px solid var(--linha);padding:14px 20px}
+  .barra{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  h1{font-size:15px;margin:0;font-weight:600;white-space:nowrap}
+  .sub{font-size:12px;color:var(--fraca);margin:2px 0 0}
+  .grupo{display:flex;gap:6px;align-items:center;margin-left:auto;flex-wrap:wrap}
+  button{font:inherit;font-size:13px;font-weight:500;padding:7px 14px;border-radius:8px;
+         border:1px solid var(--linha);background:var(--papel);color:var(--tinta);cursor:pointer;transition:all .15s}
+  button:hover{border-color:color-mix(in srgb,var(--marca) 50%,transparent)}
+  button.on{background:var(--marca);border-color:var(--marca);color:#fff}
+  main{max-width:1180px;margin:0 auto;padding:28px 20px 80px;
+       display:grid;gap:22px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+  .cartao{background:var(--papel);border:1px solid var(--linha);border-radius:16px;overflow:hidden;
+          display:flex;flex-direction:column}
+  .palco{height:270px;display:grid;place-items:center;position:relative;overflow:hidden}
+  /* A miniatura mostra o mesmo orbe no tamanho em que ele vai viver no
+     cabeçalho durante a ligação. É onde a maioria das ideias quebra. */
+  .mini{position:absolute;right:12px;bottom:12px;width:44px;height:44px;border-radius:50%;
+        border:1px solid var(--linha);display:grid;place-items:center;overflow:hidden}
+  .pe{padding:14px 18px 18px;border-top:1px solid var(--linha)}
+  .num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--marca);font-weight:500}
+  .nome{font-size:15px;font-weight:600;margin:3px 0 5px}
+  .desc{font-size:12.5px;line-height:1.55;color:var(--fraca);margin:0}
+  .tec{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--fraca);margin-top:8px;opacity:.75}
+  canvas{display:block}
+  .aviso{grid-column:1/-1;font-size:12.5px;color:var(--fraca);text-align:center;padding:4px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="barra">
+    <div>
+      <h1>Oito variantes da esfera de pontos</h1>
+      <p class="sub">Mesma amplitude nas oito. O círculo no canto é o tamanho real no cabeçalho.</p>
+    </div>
+    <div class="grupo">
+      <button id="bParado" class="on">Parado</button>
+      <button id="bClara">Clara falando</button>
+      <button id="bVoce">Você falando</button>
+      <button id="bMic">Usar meu microfone</button>
+      <button id="bTema">Escuro</button>
+    </div>
+  </div>
+</header>
+<main id="grade">
+  <p class="aviso">A amplitude é simulada. Clique em <strong>Usar meu microfone</strong> para ver reagindo à sua voz.</p>
+</main>
+
+<script>
+/* ------------------------------------------------------------------ *
+ * Sinal: um só, compartilhado. A diferença que se vê é de desenho.
+ * ------------------------------------------------------------------ */
+const sinal = { amp: 0, alvo: 0, estado: "parado", t: 0 };
+let analisador = null, dadosMic = null;
+
+function passoDoSinal(dt){
+  sinal.t += dt;
+  if (analisador){
+    analisador.getByteTimeDomainData(dadosMic);
+    let soma = 0;
+    for (let i = 0; i < dadosMic.length; i++){ const v = (dadosMic[i]-128)/128; soma += v*v; }
+    sinal.alvo = Math.min(1, Math.sqrt(soma/dadosMic.length) * 4.5);
+  } else if (sinal.estado === "parado"){
+    sinal.alvo = 0.06 + 0.04 * (0.5 + 0.5*Math.sin(sinal.t*1.1));
+  } else {
+    const s = 0.5 + 0.5*Math.sin(sinal.t*7.3);
+    const p = 0.5 + 0.5*Math.sin(sinal.t*2.9 + 1.7);
+    sinal.alvo = Math.max(0.08, Math.min(1, s*p*1.5));
+  }
+  const k = sinal.alvo > sinal.amp ? 14 : 5;
+  sinal.amp += (sinal.alvo - sinal.amp) * Math.min(1, dt*k);
+}
+
+function cores(){
+  const r = getComputedStyle(document.body);
+  const eu = sinal.estado === "voce";
+  return {
+    a: (eu ? r.getPropertyValue("--navy") : r.getPropertyValue("--marca")).trim(),
+    b: (eu ? r.getPropertyValue("--lavanda") : r.getPropertyValue("--marca-claro")).trim(),
+  };
+}
+function hexa(hex, alpha){
+  const n = parseInt(hex.replace("#",""),16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+}
+function misturar(h1, h2, t){
+  const a = parseInt(h1.replace("#",""),16), b = parseInt(h2.replace("#",""),16);
+  const m = (des) => Math.round((((a>>des)&255)*(1-t) + ((b>>des)&255)*t));
+  return `rgb(${m(16)},${m(8)},${m(0)})`;
+}
+
+/* ------------------------------------------------------------------ *
+ * A geometria que as oito compartilham
+ * ------------------------------------------------------------------ */
+
+/** Esfera de Fibonacci: a distribuição mais uniforme que existe sem iterar. */
+function esferaUniforme(N){
+  const pts = [], phi = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++){
+    const y = 1 - (i/(N-1))*2, r = Math.sqrt(1 - y*y), th = phi*i;
+    pts.push({ x: Math.cos(th)*r, y, z: Math.sin(th)*r, i });
+  }
+  return pts;
+}
+
+/** Pontos em anéis de latitude: o mesmo volume, mas com estrutura visível. */
+function esferaEmAneis(linhas, porLinha){
+  const pts = []; let i = 0;
+  for (let l = 0; l < linhas; l++){
+    const lat = (l/(linhas-1) - 0.5) * Math.PI * 0.94;
+    const y = Math.sin(lat), r = Math.cos(lat);
+    const n = Math.max(6, Math.round(porLinha * r));
+    for (let k = 0; k < n; k++){
+      const th = (k/n) * Math.PI * 2 + l * 0.35;
+      pts.push({ x: Math.cos(th)*r, y, z: Math.sin(th)*r, i: i++, anel: l });
+    }
+  }
+  return pts;
+}
+
+/** Rotação em Y, inclinação em X e perspectiva. Uma função para as oito. */
+function projetar(p, giro, inclina, raio, meio){
+  const cx = Math.cos(giro), sx = Math.sin(giro);
+  let x = p.x*cx - p.z*sx, z = p.x*sx + p.z*cx;
+  const ci = Math.cos(inclina), si = Math.sin(inclina);
+  const y = p.y*ci - z*si;
+  z = p.y*si + z*ci;
+  const perto = 1.9 / (1.9 + z);
+  return { X: meio + x*raio*perto, Y: meio + y*raio*perto, z, perto, prof: (z+1)/2 };
+}
+
+/** A onda que corre pela superfície. É o que faz a esfera "falar". */
+function ondaNoPonto(p, t){
+  return Math.sin(p.y*5 + t*4.5) * Math.cos(p.x*4 - t*3.1);
+}
+
+/* ------------------------------------------------------------------ *
+ * As oito
+ * ------------------------------------------------------------------ */
+const VARIANTES = [];
+function registrar(num, nome, desc, tec, criar){ VARIANTES.push({ num, nome, desc, tec, criar }); }
+
+/** Cada variante devolve uma função desenhar(ctx, lado, dt). */
+
+registrar(1, "Base", "A que você escolheu, sem mudança. 700 pontos uniformes, a onda correndo pela superfície e o raio empurrado pela voz. Serve de referência para comparar as outras sete.",
+"700 pontos · Fibonacci", () => {
+  const pts = esferaUniforme(700);
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    for (const p of pts){
+      const r = 0.72 + amp*0.30*ondaNoPonto(p, sinal.t) + amp*0.10;
+      const q = projetar(p, sinal.t*0.42, 0.42, lado*0.5*r, meio);
+      ctx.globalAlpha = 0.18 + (1-q.prof)*0.72;
+      ctx.fillStyle = q.prof > 0.55 ? a : b;
+      ctx.beginPath();
+      ctx.arc(q.X, q.Y, (0.9 + (1-q.prof)*1.5)*q.perto*(lado/260), 0, 6.284);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+registrar(2, "Névoa", "Quatro vezes mais pontos, todos minúsculos e do mesmo tamanho. Some a sensação de partícula e sobra a de volume, como pó em suspensão. Mais calma que a base, e a que melhor aguenta ficar dez minutos na tela.",
+"2600 pontos · tamanho fixo", () => {
+  const pts = esferaUniforme(2600);
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    for (const p of pts){
+      const r = 0.70 + amp*0.26*ondaNoPonto(p, sinal.t) + amp*0.08;
+      const q = projetar(p, sinal.t*0.34, 0.40, lado*0.5*r, meio);
+      ctx.globalAlpha = 0.10 + (1-q.prof)*0.42;
+      ctx.fillStyle = q.prof > 0.5 ? a : b;
+      ctx.beginPath(); ctx.arc(q.X, q.Y, 0.85*t, 0, 6.284); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+registrar(3, "Casca", "Os mesmos pontos, mas só os da silhueta aparecem. A esfera fica oca: um contorno feito de pontos, com o miolo vazio. É a mais leve visualmente e a que menos briga com o texto ao lado.",
+"700 pontos · opacidade por silhueta", () => {
+  const pts = esferaUniforme(900);
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    for (const p of pts){
+      const r = 0.74 + amp*0.26*ondaNoPonto(p, sinal.t) + amp*0.08;
+      const raio = lado*0.5*r;
+      const q = projetar(p, sinal.t*0.42, 0.42, raio, meio);
+      // A borda é onde o ponto projetado se afasta do centro. Elevar à
+      // sexta potência transforma a esfera cheia num anel de pontos.
+      const d = Math.hypot(q.X - meio, q.Y - meio) / raio;
+      const borda = Math.pow(Math.min(1, d), 6);
+      if (borda < 0.02) continue;
+      ctx.globalAlpha = borda * (0.35 + (1-q.prof)*0.6);
+      ctx.fillStyle = q.prof > 0.55 ? a : b;
+      ctx.beginPath(); ctx.arc(q.X, q.Y, (1.1 + borda*1.4)*q.perto*t, 0, 6.284); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+registrar(4, "Paralelos", "Os pontos deixam de ser aleatórios e viram anéis de latitude, como um globo de arame. Ganha ordem e cara de instrumento de medição, o que combina com equipamento médico. Perde a organicidade da base.",
+"22 anéis · latitude", () => {
+  const pts = esferaEmAneis(22, 44);
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    for (const p of pts){
+      // A onda anda por anel, não por ponto: o anel inteiro sobe e desce
+      // junto, e é isso que faz a estrutura aparecer.
+      const r = 0.72 + amp*0.28*Math.sin(p.anel*0.8 + sinal.t*5) + amp*0.08;
+      const q = projetar(p, sinal.t*0.42, 0.42, lado*0.5*r, meio);
+      ctx.globalAlpha = 0.16 + (1-q.prof)*0.7;
+      ctx.fillStyle = q.prof > 0.55 ? a : b;
+      ctx.beginPath(); ctx.arc(q.X, q.Y, (0.9 + (1-q.prof)*1.3)*q.perto*t, 0, 6.284); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+registrar(5, "Núcleo", "Uma esfera sólida no centro e a poeira de pontos orbitando fora dela. O núcleo dá um ponto de foco que a base não tem, e a poeira continua contando a amplitude. É a mais legível de longe.",
+"núcleo sólido + 600 pontos externos", () => {
+  const pts = esferaUniforme(600);
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    const rn = lado*0.5*(0.34 + amp*0.07);
+
+    const halo = ctx.createRadialGradient(meio, meio, rn*0.7, meio, meio, rn*2.1);
+    halo.addColorStop(0, hexa(a, 0.2 + amp*0.2)); halo.addColorStop(1, hexa(a, 0));
+    ctx.fillStyle = halo;
+    ctx.beginPath(); ctx.arc(meio, meio, rn*2.1, 0, 6.284); ctx.fill();
+
+    // Os pontos atrás do núcleo primeiro, depois o núcleo, depois os da
+    // frente: sem isso a esfera sólida some no meio da poeira.
+    const desenhar = (atras) => {
+      for (const p of pts){
+        const r = 0.80 + amp*0.30*ondaNoPonto(p, sinal.t) + amp*0.10;
+        const q = projetar(p, sinal.t*0.38, 0.42, lado*0.5*r, meio);
+        if ((q.z > 0) !== atras) continue;
+        ctx.globalAlpha = atras ? 0.2 : 0.3 + (1-q.prof)*0.55;
+        ctx.fillStyle = atras ? b : a;
+        ctx.beginPath(); ctx.arc(q.X, q.Y, (0.9 + (1-q.prof)*1.2)*q.perto*t, 0, 6.284); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    };
+
+    desenhar(true);
+    const corpo = ctx.createRadialGradient(meio - rn*0.35, meio - rn*0.38, rn*0.1, meio, meio, rn);
+    corpo.addColorStop(0, b); corpo.addColorStop(1, a);
+    ctx.fillStyle = corpo;
+    ctx.beginPath(); ctx.arc(meio, meio, rn, 0, 6.284); ctx.fill();
+    desenhar(false);
+  };
+});
+
+registrar(6, "Rastro", "Cada ponto deixa um risco curto do caminho que acabou de fazer. A esfera passa a mostrar a direção do giro, não só a forma. Na fala os riscos esticam, e o movimento fica bem mais evidente.",
+"700 pontos · segmento entre quadros", () => {
+  const pts = esferaUniforme(700);
+  let anterior = null;
+  return (ctx, lado) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    const agora = [];
+    for (const p of pts){
+      const r = 0.72 + amp*0.30*ondaNoPonto(p, sinal.t) + amp*0.10;
+      agora.push(projetar(p, sinal.t*0.42, 0.42, lado*0.5*r, meio));
+    }
+    if (anterior){
+      // O risco é o deslocamento entre dois quadros, esticado. Esticar é o
+      // que o torna visível: o deslocamento real de um quadro é um pixel.
+      const esticar = 3 + amp*7;
+      ctx.lineCap = "round";
+      for (let i = 0; i < agora.length; i++){
+        const q = agora[i], v = anterior[i];
+        ctx.globalAlpha = 0.14 + (1-q.prof)*0.58;
+        ctx.strokeStyle = q.prof > 0.55 ? a : b;
+        ctx.lineWidth = (0.9 + (1-q.prof)*1.2)*q.perto*t;
+        ctx.beginPath();
+        ctx.moveTo(q.X - (q.X-v.X)*esticar, q.Y - (q.Y-v.Y)*esticar);
+        ctx.lineTo(q.X, q.Y);
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+    anterior = agora;
+  };
+});
+
+registrar(7, "Sopro", "Os pontos não têm raio fixo: cada um é uma mola. Na sílaba eles são empurrados para fora e voltam sozinhos, cada um no seu tempo. É a única com física de verdade, e a que mais parece reagir a você.",
+"700 molas · amortecimento por ponto", () => {
+  const pts = esferaUniforme(700);
+  const r = new Float32Array(pts.length).fill(0.72);
+  const v = new Float32Array(pts.length);
+  return (ctx, lado, dt) => {
+    const meio = lado/2, { a, b } = cores(), amp = sinal.amp;
+    const t = lado/260;
+    const passo = Math.min(0.033, dt);
+    for (let i = 0; i < pts.length; i++){
+      // Rigidez e amortecimento variam por ponto: molas iguais voltariam
+      // todas juntas e o resultado pareceria uma escala, não um sopro.
+      const rigidez = 26 + (i % 11) * 3.2;
+      const atrito = 5.5 + (i % 7) * 0.7;
+      const empurrao = amp * amp * 34 * (0.5 + 0.5*ondaNoPonto(pts[i], sinal.t));
+      v[i] += (rigidez*(0.72 - r[i]) + empurrao) * passo;
+      v[i] -= v[i] * atrito * passo;
+      r[i] += v[i] * passo;
+      const q = projetar(pts[i], sinal.t*0.38, 0.42, lado*0.5*r[i], meio);
+      ctx.globalAlpha = 0.18 + (1-q.prof)*0.7;
+      ctx.fillStyle = q.prof > 0.55 ? a : b;
+      ctx.beginPath(); ctx.arc(q.X, q.Y, (0.9 + (1-q.prof)*1.4)*q.perto*t, 0, 6.284); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+});
+
+registrar(8, "Profundidade", "A cor deixa de ser chapada: cada ponto é interpolado entre o laranja da frente e o navy do fundo, e os de trás saem desfocados. Ganha volume real, e é a que mais parece objeto e menos parece desenho.",
+"900 pontos · duotom + desfoque por z", () => {
+  const pts = esferaUniforme(900);
+  return (ctx, lado) => {
+    const meio = lado/2, amp = sinal.amp;
+    const raiz = getComputedStyle(document.body);
+    const eu = sinal.estado === "voce";
+    const frente = (eu ? raiz.getPropertyValue("--lavanda") : raiz.getPropertyValue("--marca")).trim();
+    const fundo = (eu ? raiz.getPropertyValue("--marca") : raiz.getPropertyValue("--navy")).trim();
+    const t = lado/260;
+    // De trás para a frente: com desfoque, a ordem de desenho vira a
+    // ordem de profundidade.
+    const ordenados = pts.map((p) => {
+      const r = 0.72 + amp*0.28*ondaNoPonto(p, sinal.t) + amp*0.09;
+      return projetar(p, sinal.t*0.40, 0.42, lado*0.5*r, meio);
+    }).sort((u, w) => w.z - u.z);
+    for (const q of ordenados){
+      const frenteZ = 1 - q.prof;
+      ctx.filter = q.prof > 0.5 ? `blur(${((q.prof-0.5)*4.5).toFixed(2)}px)` : "none";
+      ctx.globalAlpha = 0.3 + frenteZ*0.62;
+      ctx.fillStyle = misturar(fundo, frente, frenteZ);
+      ctx.beginPath(); ctx.arc(q.X, q.Y, (0.8 + frenteZ*2.0)*q.perto*t, 0, 6.284); ctx.fill();
+    }
+    ctx.filter = "none"; ctx.globalAlpha = 1;
+  };
+});
+
+/* ------------------------------------------------------------------ *
+ * Montagem
+ * ------------------------------------------------------------------ */
+function novoCanvas(pai, tamanho){
+  const c = document.createElement("canvas");
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = tamanho*dpr; c.height = tamanho*dpr;
+  c.style.width = tamanho+"px"; c.style.height = tamanho+"px";
+  const ctx = c.getContext("2d"); ctx.scale(dpr, dpr);
+  pai.appendChild(c);
+  return { ctx, lado: tamanho };
+}
+
+const grade = document.getElementById("grade");
+const pintores = [];
+for (const v of VARIANTES){
+  const cartao = document.createElement("section");
+  cartao.className = "cartao";
+  cartao.innerHTML = `<div class="palco"><div class="mini"></div></div>
+    <div class="pe">
+      <div class="num">${String(v.num).padStart(2,"0")}</div>
+      <h2 class="nome">${v.nome}</h2>
+      <p class="desc">${v.desc}</p>
+      <p class="tec">${v.tec}</p>
+    </div>`;
+  grade.appendChild(cartao);
+
+  const palco = cartao.querySelector(".palco");
+  const grande = novoCanvas(palco, 262);
+  const pequeno = novoCanvas(cartao.querySelector(".mini"), 44);
+  // Duas instâncias do mesmo desenho: a de 44 px é o teste que importa,
+  // porque é o tamanho em que o orbe vive no cabeçalho durante a ligação.
+  const dA = v.criar(), dB = v.criar();
+  pintores.push((dt) => {
+    grande.ctx.clearRect(0, 0, grande.lado, grande.lado);
+    dA(grande.ctx, grande.lado, dt);
+    pequeno.ctx.clearRect(0, 0, pequeno.lado, pequeno.lado);
+    dB(pequeno.ctx, pequeno.lado, dt);
+  });
+}
+
+let anterior = performance.now();
+function laco(agora){
+  const dt = Math.min(0.05, (agora - anterior)/1000);
+  anterior = agora;
+  passoDoSinal(dt);
+  for (const p of pintores) p(dt);
+  requestAnimationFrame(laco);
+}
+requestAnimationFrame(laco);
+
+/* ------------------------------------------------------------------ *
+ * Controles
+ * ------------------------------------------------------------------ */
+const botoes = { parado: bParado, clara: bClara, voce: bVoce };
+function trocarEstado(e){
+  sinal.estado = e;
+  for (const [k, b] of Object.entries(botoes)) b.classList.toggle("on", k === e);
+}
+bParado.onclick = () => trocarEstado("parado");
+bClara.onclick = () => trocarEstado("clara");
+bVoce.onclick = () => trocarEstado("voce");
+bMic.onclick = async () => {
+  if (analisador){ analisador = null; bMic.classList.remove("on"); bMic.textContent = "Usar meu microfone"; return; }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const ac = new AudioContext();
+    analisador = ac.createAnalyser(); analisador.fftSize = 1024;
+    dadosMic = new Uint8Array(analisador.fftSize);
+    ac.createMediaStreamSource(stream).connect(analisador);
+    bMic.classList.add("on"); bMic.textContent = "Microfone ligado";
+    trocarEstado("voce");
+  } catch { bMic.textContent = "Microfone negado"; }
+};
+bTema.onclick = () => {
+  const escuro = document.body.classList.toggle("escuro");
+  bTema.textContent = escuro ? "Claro" : "Escuro";
+};
+</script>
+</body>
+</html>
