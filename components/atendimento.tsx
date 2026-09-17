@@ -14,12 +14,18 @@ import { PainelConfig } from "@/components/painel-config";
 import { Transcricao } from "@/components/transcricao";
 import { MedidorCusto } from "@/components/medidor-custo";
 import { useAtendimento } from "@/lib/useAtendimento";
+import { paraTexto } from "@/lib/falas";
 import { CONFIG_PADRAO, gravarConfig, lerConfig, pareceChave, type Config } from "@/lib/config";
 import { NOME_ATENDENTE, montarPrompt } from "@/lib/prompt";
+import {
+  compilarDicionario, gravarDicionario, lerDicionario, promptDeTranscricao,
+  DICIONARIO_PADRAO, type Termo,
+} from "@/lib/dicionario";
 import { cn } from "@/lib/utils";
 
 export function Atendimento() {
   const [config, setConfig] = useState<Config>(CONFIG_PADRAO);
+  const [dicionario, setDicionario] = useState<Termo[]>(DICIONARIO_PADRAO);
   const [painelAberto, setPainelAberto] = useState(false);
   const [copiado, setCopiado] = useState(false);
   // O localStorage só existe no browser; ler depois da montagem evita
@@ -29,6 +35,7 @@ export function Atendimento() {
   useEffect(() => {
     const salvo = lerConfig();
     setConfig(salvo);
+    setDicionario(lerDicionario());
     setMontado(true);
     if (!salvo.chave) setPainelAberto(true);
   }, []);
@@ -41,9 +48,24 @@ export function Atendimento() {
     });
   }, []);
 
+  const mudarDicionario = useCallback((termos: Termo[]) => {
+    setDicionario(termos);
+    gravarDicionario(termos);
+  }, []);
+
+  // Compilar dezenas de expressões regulares a cada tecla digitada no
+  // dicionário seria desperdício; isto só refaz quando a lista muda.
+  const compilado = useMemo(() => compilarDicionario(dicionario), [dicionario]);
+  const promptTranscricao = useMemo(() => promptDeTranscricao(dicionario), [dicionario]);
+
   const configAtiva = useMemo(
-    () => ({ ...config, promptMontado: montarPrompt(config.persona, config.base) }),
-    [config],
+    () => ({
+      ...config,
+      promptMontado: montarPrompt(config.persona, config.base),
+      promptTranscricao,
+      dicionario: compilado,
+    }),
+    [config, compilado, promptTranscricao],
   );
 
   const { estado, falas, uso, turnos, segundos, falando, erro, iniciar, encerrar, limparErro } =
@@ -53,10 +75,7 @@ export function Atendimento() {
   const podeIniciar = montado && pareceChave(config.chave);
 
   const copiarTranscricao = async () => {
-    const texto = falas
-      .map((f) => `${f.quem === "clara" ? NOME_ATENDENTE : "Cliente"}: ${f.texto}`)
-      .join("\n\n");
-    await navigator.clipboard.writeText(texto);
+    await navigator.clipboard.writeText(paraTexto(falas, NOME_ATENDENTE));
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
   };
@@ -205,6 +224,7 @@ export function Atendimento() {
       {painelAberto && (
         <PainelConfig
           config={config} aoMudar={mudarConfig}
+          dicionario={dicionario} aoMudarDicionario={mudarDicionario}
           aoFechar={() => setPainelAberto(false)} travado={emLigacao}
         />
       )}

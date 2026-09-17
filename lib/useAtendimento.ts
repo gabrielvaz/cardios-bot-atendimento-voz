@@ -23,23 +23,22 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Config } from "./config";
 import { lerUso, somarUso, USO_ZERO, type Uso } from "./custo";
+import { aplicarDicionario, type DicionarioCompilado } from "./dicionario";
+import { congelar, escrever as escreverFala, reservar as reservarFala, type Fala, type Quem } from "./falas";
 
 export type Estado = "parado" | "conectando" | "ativo" | "encerrado";
-export type Quem = "clara" | "cliente";
-
-export type Fala = {
-  id: string;
-  quem: Quem;
-  texto: string;
-  /** Ainda chegando; a tela mostra em tom mais claro. */
-  parcial: boolean;
-  em: number;
-};
+export type { Fala, Quem } from "./falas";
 
 export type Erro = { titulo: string; detalhe?: string; comoResolver?: string };
 
-/** A config salva mais o prompt já concatenado, que é o que vai para a API. */
-export type ConfigAtiva = Config & { promptMontado: string };
+/** A config salva mais o que é derivado dela e vai para a API. */
+export type ConfigAtiva = Config & {
+  promptMontado: string;
+  /** Vai no `prompt` da transcrição: enviesa o reconhecimento na origem. */
+  promptTranscricao: string;
+  /** Corrige o que passou mesmo assim, sobre o texto acumulado. */
+  dicionario: DicionarioCompilado;
+};
 
 export type Atendimento = {
   estado: Estado;
@@ -85,7 +84,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
     setEstado((atual) => (atual === "parado" ? "parado" : "encerrado"));
     // A fala que ficou pela metade quando a linha caiu continua na tela, mas
     // deixa de piscar como se ainda estivesse chegando.
-    setFalas((atuais) => atuais.map((f) => (f.parcial ? { ...f, parcial: false } : f)));
+    setFalas(congelar);
   }, []);
 
   useEffect(() => () => encerrar(), [encerrar]);
@@ -98,29 +97,25 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
     return () => clearInterval(id);
   }, [estado]);
 
-  /** Acrescenta ou completa a fala corrente de quem está falando. */
+  // Casca fina sobre lib/falas.ts, que é onde a ordem da conversa é decidida
+  // e testada.
   const escrever = useCallback(
     (quem: Quem, id: string, texto: string, parcial: boolean, somar: boolean) => {
-      setFalas((atuais) => {
-        const i = atuais.findIndex((f) => f.id === id);
-        if (i === -1) {
-          return [...atuais, { id, quem, texto, parcial, em: Date.now() }];
-        }
-        const copia = [...atuais];
-        copia[i] = {
-          ...copia[i],
-          texto: somar ? copia[i].texto + texto : texto,
-          parcial,
-        };
-        return copia;
-      });
+      setFalas((atuais) => escreverFala(atuais, quem, id, texto, parcial, somar));
     },
     [],
   );
 
+  const reservar = useCallback((quem: Quem, id: string) => {
+    setFalas((atuais) => reservarFala(atuais, quem, id));
+  }, []);
+
   const tratarEvento = useCallback(
     (evento: Record<string, unknown>) => {
       const tipo = String(evento.type ?? "");
+      const dic = configRef.current.dicionario;
+      /** Corrige o texto acumulado, nunca o fragmento solto. */
+      const corrigir = (texto: string) => aplicarDicionario(texto, dic);
 
       // --- a Clara falando -------------------------------------------------
       if (tipo === "response.output_audio_transcript.delta" || tipo === "response.audio_transcript.delta") {
@@ -128,7 +123,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
         return;
       }
       if (tipo === "response.output_audio_transcript.done" || tipo === "response.audio_transcript.done") {
-        escrever("clara", `clara:${evento.item_id}`, String(evento.transcript ?? ""), false, false);
+        escrever("clara", `clara:${evento.item_id}`, corrigir(String(evento.transcript ?? "")), false, false);
         return;
       }
 
@@ -138,11 +133,24 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
         return;
       }
       if (tipo === "conversation.item.input_audio_transcription.completed") {
-        escrever("cliente", `cliente:${evento.item_id}`, String(evento.transcript ?? "").trim(), false, false);
+        escrever("cliente", `cliente:${evento.item_id}`, corrigir(String(evento.transcript ?? "").trim()), false, false);
         return;
       }
       if (tipo === "conversation.item.input_audio_transcription.failed") {
         escrever("cliente", `cliente:${evento.item_id}`, "(não consegui entender o áudio)", false, false);
+        return;
+      }
+
+      // --- a ordem da conversa ---------------------------------------------
+      // O turno do cliente fecha aqui, antes de a Clara começar a responder.
+      // É o momento certo de reservar o lugar dele na lista.
+      if (tipo === "input_audio_buffer.committed" && evento.item_id) {
+        reservar("cliente", `cliente:${evento.item_id}`);
+        return;
+      }
+      if (tipo === "conversation.item.added" || tipo === "conversation.item.created") {
+        const item = evento.item as { id?: string; role?: string } | undefined;
+        if (item?.id && item.role === "user") reservar("cliente", `cliente:${item.id}`);
         return;
       }
 
@@ -174,7 +182,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
         setErro({ titulo: "A OpenAI devolveu um erro.", detalhe: e?.message ?? JSON.stringify(evento) });
       }
     },
-    [escrever],
+    [escrever, reservar],
   );
 
   const iniciar = useCallback(async () => {
@@ -222,7 +230,14 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
               input: {
                 // Transcrever a fala do cliente é o que permite mostrar a
                 // conversa na tela. Fixar o idioma reduz erro em nome de produto.
-                transcription: { model: "whisper-1", language: "pt" },
+                transcription: {
+                  model: "whisper-1",
+                  language: "pt",
+                  // Enviesa o reconhecimento na origem com os nomes próprios
+                  // do dicionário. É a correção que vale mais: melhor o modelo
+                  // ouvir "CardioLight" do que ser consertado depois.
+                  prompt: cfg.promptTranscricao,
+                },
                 turn_detection: { type: cfg.deteccao },
                 noise_reduction: { type: "near_field" },
               },

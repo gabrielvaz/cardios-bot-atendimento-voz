@@ -2,7 +2,7 @@
 
 /** A conversa em texto, rolando sozinha enquanto acontece. */
 import { useEffect, useRef } from "react";
-import type { Fala } from "@/lib/useAtendimento";
+import type { Fala } from "@/lib/falas";
 import { NOME_ATENDENTE } from "@/lib/prompt";
 import { cn } from "@/lib/utils";
 

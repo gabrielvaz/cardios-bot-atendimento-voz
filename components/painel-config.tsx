@@ -15,15 +15,19 @@ import { VOZES } from "@/lib/vozes";
 import { BASE_PADRAO, PERSONA_PADRAO, estimarTokens, montarPrompt } from "@/lib/prompt";
 import { PREMISSAS_MINUTO, custoPorMinuto, formatarUSD } from "@/lib/custo";
 import { mascararChave, pareceChave, type Config } from "@/lib/config";
+import { PainelDicionario } from "@/components/painel-dicionario";
+import type { Termo } from "@/lib/dicionario";
 import { cn } from "@/lib/utils";
 
-type Aba = "acesso" | "voz" | "prompt";
+type Aba = "acesso" | "voz" | "dicionario" | "prompt";
 
 export function PainelConfig({
-  config, aoMudar, aoFechar, travado,
+  config, aoMudar, dicionario, aoMudarDicionario, aoFechar, travado,
 }: {
   config: Config;
   aoMudar: (parcial: Partial<Config>) => void;
+  dicionario: Termo[];
+  aoMudarDicionario: (termos: Termo[]) => void;
   aoFechar: () => void;
   /** Durante a ligação a sessão já está aberta: mudar aqui só vale na próxima. */
   travado: boolean;
@@ -49,13 +53,13 @@ export function PainelConfig({
         </Button>
       </header>
 
-      <nav className="flex shrink-0 gap-1 border-b border-border px-3 py-2">
-        {([["acesso", "Acesso"], ["voz", "Modelo e voz"], ["prompt", "Prompt"]] as const).map(([id, rotulo]) => (
+      <nav className="flex shrink-0 gap-1 overflow-x-auto border-b border-border px-3 py-2">
+        {([["acesso", "Acesso"], ["voz", "Modelo e voz"], ["dicionario", "Dicionário"], ["prompt", "Prompt"]] as const).map(([id, rotulo]) => (
           <button
             key={id}
             onClick={() => setAba(id)}
             className={cn(
-              "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+              "shrink-0 rounded-md px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors",
               aba === id
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:text-foreground",
@@ -174,6 +178,10 @@ export function PainelConfig({
               </div>
             </div>
           </>
+        )}
+
+        {aba === "dicionario" && (
+          <PainelDicionario termos={dicionario} aoMudar={aoMudarDicionario} />
         )}
 
         {aba === "prompt" && (

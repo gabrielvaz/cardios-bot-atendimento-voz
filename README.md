@@ -40,6 +40,31 @@ A escolha foi prompt inteiro, não busca com tool. São 37 documentos, não 370.
 Se o contexto apertar, a tool entra depois sem reescrever nada: `montarBase()`
 já está isolada em `lib/conhecimento/index.ts`.
 
+## O dicionário de fala
+
+O reconhecimento de voz erra nome próprio o tempo todo: "cardio online" por
+Cardioline, "Cardius" por Cardios, "Router" por Holter. O dicionário
+(`lib/dicionario.ts`) age em dois lugares, e os dois importam:
+
+1. **Antes.** As formas corretas vão no `prompt` da transcrição, que enviesa o
+   reconhecimento na origem. É a correção que vale mais: melhor o modelo ouvir
+   "CardioLight" do que ser consertado depois.
+2. **Depois.** As variantes corrigem, por expressão regular, o que passou mesmo
+   assim, sempre sobre o texto acumulado e nunca sobre o fragmento solto.
+
+Vem com 36 termos e 193 variantes, e a aba **Dicionário** na configuração deixa
+acrescentar, editar e remover. O que você apagar não volta quando a lista padrão
+crescer numa versão futura.
+
+A regra ao escrever uma variante: **ela não pode ser palavra legítima do
+português**. "voltar" como variante de Holter destruiria o verbo. Quando a forma
+errada também é palavra comum, escreva-a com maiúscula: variante capitalizada só
+casa capitalizada, e o modelo capitaliza o que entende como nome próprio. É
+assim que "Router" vira Holter sem que "o roteador da sala" seja tocado.
+
+Portado de `live-translation/lib/glossary.ts`, que foi escrito contra erro real
+de transcrição, não contra suposição.
+
 ## O que dá para mexer na tela
 
 Tudo fica no `localStorage` e vale na ligação seguinte.
@@ -49,6 +74,7 @@ Tudo fica no `localStorage` e vale na ligação seguinte.
 - **Voz**, entre as dez, e a velocidade da fala
 - **Detecção de turno**: `semantic_vad` espera você terminar o raciocínio,
   `server_vad` corta no silêncio e responde mais rápido
+- **O dicionário de fala**, com busca, edição e volta ao original
 - **O system prompt inteiro**, em duas partes: a persona da Clara, curta e feita
   para editar, e a base gerada. Com a contagem de tokens ao vivo.
 
@@ -100,15 +126,18 @@ arquivo a tocar.
 ```
 lib/useAtendimento.ts               a ligação: segredo efêmero, WebRTC, estado
 lib/custo.ts                        a conta (puro, testado)
+lib/falas.ts                        a lista da conversa e a ordem dela (puro, testado)
+lib/dicionario.ts                   a correção da fala (puro, testado)
 lib/modelos.ts  lib/vozes.ts        as tabelas de preço e de voz
 lib/prompt.ts                       a persona da Clara e a montagem
 lib/conhecimento/                   a base gerada e o markdown que o modelo lê
 components/atendimento.tsx          a tela inteira
 components/painel-config.tsx        o painel de configuração
+components/painel-dicionario.tsx    a administração do dicionário
 components/ui/beat.tsx              o Beat Design System portado para React
 .github/workflows/pages.yml         o deploy
 scripts/gerar-conhecimento.mjs      extrai das fontes
-scripts/custo.test.ts               os testes
+scripts/*.test.ts                   os testes
 ```
 
 ## Sobre o Beat
@@ -123,7 +152,14 @@ arquivo sai.
 
 ## O que ainda não foi testado
 
-A conversa de verdade. O que está verificado: o build estático passa, os catorze
+A conversa de verdade. O que está verificado: o build estático passa, os 39
 testes passam, a página responde em celular e desktop sem estouro de largura, e
 a OpenAI aceita chamada do navegador nos dois endpoints. Falta ligar com uma
 chave real e ouvir a Clara.
+
+Uma nota sobre a ordem da conversa: a transcrição do que o cliente falou chega
+**depois** que a Clara já começou a responder, porque transcrever a entrada é um
+trabalho paralelo ao de gerar a resposta. O lugar do cliente é reservado em
+`input_audio_buffer.committed`, que fecha o turno dele. `lib/falas.ts` existe
+fora do hook só para essa regra poder ser testada, e um dos testes é o bug
+antigo, para ele não voltar em silêncio.
