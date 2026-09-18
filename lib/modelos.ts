@@ -5,7 +5,7 @@
  * https://developers.openai.com/api/docs/pricing em 2026-09-17.
  * A Realtime cobra por token e separa áudio de texto: áudio custa oito vezes
  * mais que texto na entrada, e o cache derruba a entrada para centavos. É por
- * isso que o prompt grande da Clara sai barato depois do primeiro turno.
+ * isso que o prompt grande da Cora sai barato depois do primeiro turno.
  *
  * A lista está do mais novo para o mais antigo. `gpt-realtime` e
  * `gpt-realtime-mini` são apelidos que a OpenAI aponta para a versão estável,

@@ -4,7 +4,7 @@
  * O painel de configuração do teste interno: chave, modelo, voz, detecção de
  * turno e o system prompt, aberto e editável.
  *
- * Nada aqui é escondido de propósito. A ideia é poder mudar o jeito da Clara,
+ * Nada aqui é escondido de propósito. A ideia é poder mudar o jeito da Cora,
  * trocar de modelo e ver o preço mudar sem sair da tela.
  */
 import { useState } from "react";
@@ -149,7 +149,7 @@ export function PainelConfig({
             </div>
 
             <div>
-              <Label hint={`${config.velocidade.toFixed(2)}×. Abaixo de 1 a Clara fala mais devagar.`}>
+              <Label hint={`${config.velocidade.toFixed(2)}×. Abaixo de 1 a Cora fala mais devagar.`}>
                 Velocidade da fala
               </Label>
               <input
@@ -193,7 +193,7 @@ export function PainelConfig({
 
             <div>
               <div className="flex items-start justify-between gap-2">
-                <Label hint="Quem a Clara é e como ela atende. Esta parte é para mexer.">Persona</Label>
+                <Label hint="Quem a Cora é e como ela atende. Esta parte é para mexer.">Persona</Label>
                 <Button variant="ghost" size="sm" onClick={() => aoMudar({ persona: PERSONA_PADRAO })}>
                   <RotateCcw /> original
                 </Button>

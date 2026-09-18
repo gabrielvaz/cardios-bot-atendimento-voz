@@ -4,7 +4,7 @@ export type Conhecimento = typeof dados;
 export const conhecimento: Conhecimento = dados;
 
 /**
- * A base vira o texto que a Clara lê. Markdown enxuto de propósito: cabeçalho
+ * A base vira o texto que a Cora lê. Markdown enxuto de propósito: cabeçalho
  * curto, sem tabela, sem link solto. O modelo lê isto uma vez por sessão e
  * depois vem do cache.
  */

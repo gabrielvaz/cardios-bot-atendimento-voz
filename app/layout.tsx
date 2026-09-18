@@ -8,7 +8,7 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "sw
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Clara · Suporte Cardios",
+  title: "Cora · Suporte Cardios",
   description: "Atendimento de suporte técnico da Cardios por voz. Teste interno.",
   robots: { index: false, follow: false },
 };

@@ -10,7 +10,7 @@
  */
 import { MODELO_PADRAO } from "./modelos";
 import { VOZ_PADRAO } from "./vozes";
-import { BASE_PADRAO, PERSONA_PADRAO } from "./prompt";
+import { BASE_PADRAO, PERSONA_PADRAO, PERSONAS_ANTERIORES } from "./prompt";
 
 export type DeteccaoDeTurno = "server_vad" | "semantic_vad";
 
@@ -42,7 +42,7 @@ export function lerConfig(): Config {
     const bruto = window.localStorage.getItem(STORAGE);
     if (!bruto) return { ...CONFIG_PADRAO };
     const salvo = JSON.parse(bruto) as Partial<Config>;
-    return { ...CONFIG_PADRAO, ...salvo };
+    return migrar({ ...CONFIG_PADRAO, ...salvo });
   } catch {
     return { ...CONFIG_PADRAO };
   }
@@ -60,6 +60,25 @@ export function gravarConfig(config: Config): void {
 export function limparConfig(): void {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(STORAGE);
+}
+
+/**
+ * Leva uma configuração antiga para a de hoje.
+ *
+ * O caso que existe é a persona: ela vive no navegador de quem usa, então
+ * trocar o texto no código não alcança quem já abriu a aplicação antes. Quando
+ * a atendente passou de Clara para Cora, quem já tinha uma persona salva
+ * continuaria ouvindo o nome antigo para sempre.
+ *
+ * A troca só acontece se o texto salvo for exatamente um padrão anterior. Uma
+ * persona que a pessoa editou à mão nunca é tocada, porque editar é a razão de
+ * o campo existir.
+ */
+export function migrar(config: Config): Config {
+  if (PERSONAS_ANTERIORES.includes(config.persona.trim())) {
+    return { ...config, persona: PERSONA_PADRAO };
+  }
+  return config;
 }
 
 /** Mostra só o suficiente para reconhecer qual chave está salva. */

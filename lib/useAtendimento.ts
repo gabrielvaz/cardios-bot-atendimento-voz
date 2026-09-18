@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * A ligação com a Clara.
+ * A ligação com a Cora.
  *
  * O caminho é o WebRTC do browser, não WebSocket: o áudio sobe e desce pela
  * própria conexão de mídia, com o jitter buffer e o cancelamento de eco que o
@@ -45,7 +45,7 @@ export type Atendimento = {
   estado: Estado;
   falas: Fala[];
   uso: Uso;
-  /** Turnos respondidos pela Clara. Zero significa que nada foi cobrado ainda. */
+  /** Turnos respondidos pela Cora. Zero significa que nada foi cobrado ainda. */
   turnos: number;
   segundos: number;
   falando: Quem | null;
@@ -127,13 +127,13 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       /** Corrige o texto acumulado, nunca o fragmento solto. */
       const corrigir = (texto: string) => aplicarDicionario(texto, dic);
 
-      // --- a Clara falando -------------------------------------------------
+      // --- a Cora falando -------------------------------------------------
       if (tipo === "response.output_audio_transcript.delta" || tipo === "response.audio_transcript.delta") {
-        escrever("clara", `clara:${evento.item_id}`, String(evento.delta ?? ""), true, true);
+        escrever("cora", `cora:${evento.item_id}`, String(evento.delta ?? ""), true, true);
         return;
       }
       if (tipo === "response.output_audio_transcript.done" || tipo === "response.audio_transcript.done") {
-        escrever("clara", `clara:${evento.item_id}`, corrigir(String(evento.transcript ?? "")), false, false);
+        escrever("cora", `cora:${evento.item_id}`, corrigir(String(evento.transcript ?? "")), false, false);
         return;
       }
 
@@ -152,7 +152,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       }
 
       // --- a ordem da conversa ---------------------------------------------
-      // O turno do cliente fecha aqui, antes de a Clara começar a responder.
+      // O turno do cliente fecha aqui, antes de a Cora começar a responder.
       // É o momento certo de reservar o lugar dele na lista.
       if (tipo === "input_audio_buffer.committed" && evento.item_id) {
         reservar("cliente", `cliente:${evento.item_id}`);
@@ -167,7 +167,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       // --- quem tem a palavra ----------------------------------------------
       if (tipo === "input_audio_buffer.speech_started") return setFalando("cliente");
       if (tipo === "input_audio_buffer.speech_stopped") return setFalando(null);
-      if (tipo === "output_audio_buffer.started" || tipo === "response.created") return setFalando("clara");
+      if (tipo === "output_audio_buffer.started" || tipo === "response.created") return setFalando("cora");
       if (tipo === "output_audio_buffer.stopped" || tipo === "output_audio_buffer.cleared") return setFalando(null);
 
       // --- a conta ----------------------------------------------------------
@@ -179,7 +179,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
         }
         if (resposta?.status === "failed") {
           setErro({
-            titulo: "A Clara não conseguiu responder.",
+            titulo: "A Cora não conseguiu responder.",
             detalhe: JSON.stringify(resposta.status_details),
           });
         }
@@ -223,7 +223,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       micRef.current = mic;
 
       // O medidor sobe junto com o microfone: a voz de quem liga já pode ser
-      // medida antes mesmo de a Clara atender.
+      // medida antes mesmo de a Cora atender.
       const medidor = new Medidor();
       medidor.ligar("cliente", mic);
       medidorRef.current = medidor;
@@ -295,9 +295,9 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
       audioRef.current = audio;
       pc.ontrack = (e) => {
         audio.srcObject = e.streams[0];
-        // A trilha remota é a voz da Clara. Medi-la em separado é o que
+        // A trilha remota é a voz da Cora. Medi-la em separado é o que
         // permite o orbe trocar de cor conforme quem tem a palavra.
-        medidor.ligar("clara", e.streams[0]);
+        medidor.ligar("cora", e.streams[0]);
       };
       pc.addTrack(mic.getAudioTracks()[0], mic);
 
@@ -356,7 +356,7 @@ export function useAtendimento(config: ConfigAtiva): Atendimento {
   }, [encerrar, tratarEvento]);
 
   const lerNiveis = useCallback(
-    (dt: number) => medidorRef.current?.ler(dt) ?? { clara: 0, cliente: 0 },
+    (dt: number) => medidorRef.current?.ler(dt) ?? { cora: 0, cliente: 0 },
     [],
   );
 

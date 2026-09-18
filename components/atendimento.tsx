@@ -166,7 +166,7 @@ export function Atendimento() {
                   priority
                   className="mb-7 h-12 w-auto sm:h-14"
                 />
-                {/* Parada, a Clara respira: uma senoide lenta, sem áudio
+                {/* Parada, a Cora respira: uma senoide lenta, sem áudio
                     nenhum. É o mesmo componente da ligação, e é o que faz a
                     tela inicial já dizer que ali se fala com alguém. */}
                 <div className="mb-2">
@@ -193,7 +193,7 @@ export function Atendimento() {
                 {podeIniciar && (
                   <p className="mt-4 max-w-xs text-xs leading-relaxed text-balance text-muted-foreground">
                     O navegador vai pedir o microfone. Use fone de ouvido: sem ele a
-                    Clara escuta a própria voz.
+                    Cora escuta a própria voz.
                   </p>
                 )}
               </div>
@@ -261,12 +261,12 @@ function Disco({
   estado, falando, lerNiveis,
 }: {
   estado: string;
-  falando: "clara" | "cliente" | null;
-  lerNiveis: (dt: number) => { clara: number; cliente: number };
+  falando: "cora" | "cliente" | null;
+  lerNiveis: (dt: number) => { cora: number; cliente: number };
 }) {
   const legenda =
     estado === "conectando" ? "chamando…"
-      : falando === "clara" ? `${NOME_ATENDENTE} está falando`
+      : falando === "cora" ? `${NOME_ATENDENTE} está falando`
       : falando === "cliente" ? "ouvindo você"
       : "pode falar";
 

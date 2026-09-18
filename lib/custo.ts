@@ -1,11 +1,11 @@
 /**
  * Conta o que a conversa custou.
  *
- * A Realtime manda um evento `response.done` a cada resposta da Clara, com o
+ * A Realtime manda um evento `response.done` a cada resposta da Cora, com o
  * `usage` daquele turno. O que interessa ali é que o mesmo campo `input_tokens`
  * mistura três preços diferentes: texto novo, áudio novo e o que veio do cache.
  * Somar tudo pelo preço de áudio erra por quase cem vezes depois do segundo
- * turno, porque o prompt inteiro da Clara entra em cache. Daí a subtração
+ * turno, porque o prompt inteiro da Cora entra em cache. Daí a subtração
  * explícita abaixo.
  *
  * Tudo aqui é função pura, sem relógio e sem rede, de propósito: é a parte que
@@ -110,7 +110,7 @@ export function custoUSD(uso: Uso, modeloId: string): number {
 export function custoPorFaixa(uso: Uso, modeloId: string) {
   const p = acharModelo(modeloId).preco;
   return [
-    { rotulo: "Áudio de saída (a voz da Clara)", tokens: uso.audioSaida, usd: (uso.audioSaida * p.audioSaida) / 1e6 },
+    { rotulo: "Áudio de saída (a voz da Cora)", tokens: uso.audioSaida, usd: (uso.audioSaida * p.audioSaida) / 1e6 },
     { rotulo: "Áudio de entrada (a sua voz)", tokens: uso.audioEntrada, usd: (uso.audioEntrada * p.audioEntrada) / 1e6 },
     { rotulo: "Texto de entrada", tokens: uso.textoEntrada, usd: (uso.textoEntrada * p.textoEntrada) / 1e6 },
     { rotulo: "Entrada em cache (o prompt repetido)", tokens: uso.textoEntradaCache + uso.audioEntradaCache, usd: (uso.textoEntradaCache * p.textoEntradaCache + uso.audioEntradaCache * p.audioEntradaCache) / 1e6 },
@@ -124,18 +124,18 @@ export function custoPorFaixa(uso: Uso, modeloId: string) {
  * A Realtime cobra por token, não por minuto, então isto é uma projeção com
  * premissas explícitas. As duas taxas de conversão são da documentação oficial
  * (developers.openai.com/api/docs/guides/voice-latency-cost, 2026-09-17):
- * a fala do cliente vale 1 token por 100 ms, a da Clara vale 1 token por 50 ms.
+ * a fala do cliente vale 1 token por 100 ms, a da Cora vale 1 token por 50 ms.
  *
  * O resto são premissas de atendimento de suporte, e é onde a estimativa pode
  * errar: meio minuto para cada lado e quatro turnos por minuto. O prompt da
- * Clara é relido a cada turno, mas vindo do cache, e esse termo pesa mais do
+ * Cora é relido a cada turno, mas vindo do cache, e esse termo pesa mais do
  * que parece num prompt de 12 mil tokens.
  */
 export const PREMISSAS_MINUTO = {
   tokensAudioPorSegundoEntrada: 10,
   tokensAudioPorSegundoSaida: 20,
   segundosFalandoCliente: 30,
-  segundosFalandoClara: 30,
+  segundosFalandoCora: 30,
   turnosPorMinuto: 4,
 } as const;
 
@@ -143,7 +143,7 @@ export function custoPorMinuto(modeloId: string, tokensDoPrompt: number): number
   const p = acharModelo(modeloId).preco;
   const q = PREMISSAS_MINUTO;
   const audioEntrada = q.segundosFalandoCliente * q.tokensAudioPorSegundoEntrada;
-  const audioSaida = q.segundosFalandoClara * q.tokensAudioPorSegundoSaida;
+  const audioSaida = q.segundosFalandoCora * q.tokensAudioPorSegundoSaida;
   const promptEmCache = q.turnosPorMinuto * tokensDoPrompt;
   return (
     audioEntrada * p.audioEntrada +

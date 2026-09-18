@@ -15,18 +15,18 @@ import { Button } from "@/components/ui/beat";
 import { Orbe } from "@/components/orbe";
 import { Medidor, normalizar, rms, suavizar, type Niveis } from "@/lib/amplitude";
 
-type Fonte = "parado" | "clara" | "cliente" | "microfone";
+type Fonte = "parado" | "cora" | "cliente" | "microfone";
 
 export default function Bancada() {
-  const [fonte, setFonte] = useState<Fonte>("clara");
+  const [fonte, setFonte] = useState<Fonte>("cora");
   const simulado = useRef({ t: 0, v: 0 });
   const medidorRef = useRef<Medidor | null>(null);
 
   const lerNiveis = useCallback(
     (dt: number): Niveis => {
       if (fonte === "microfone") {
-        const n = medidorRef.current?.ler(dt) ?? { clara: 0, cliente: 0 };
-        return { clara: 0, cliente: n.cliente };
+        const n = medidorRef.current?.ler(dt) ?? { cora: 0, cliente: 0 };
+        return { cora: 0, cliente: n.cliente };
       }
       const s = simulado.current;
       s.t += dt;
@@ -40,7 +40,7 @@ export default function Bancada() {
               (0.5 + 0.5 * Math.sin(s.t * 7.3)) * (0.5 + 0.5 * Math.sin(s.t * 2.9 + 1.7)) * 1.5,
             );
       s.v = suavizar(s.v, Math.min(1, alvo), dt);
-      return fonte === "cliente" ? { clara: 0, cliente: s.v } : { clara: s.v, cliente: 0 };
+      return fonte === "cliente" ? { cora: 0, cliente: s.v } : { cora: s.v, cliente: 0 };
     },
     [fonte],
   );
@@ -57,14 +57,14 @@ export default function Bancada() {
     }
   };
 
-  const falando = fonte === "cliente" || fonte === "microfone" ? "cliente" : fonte === "clara" ? "clara" : null;
+  const falando = fonte === "cliente" || fonte === "microfone" ? "cliente" : fonte === "cora" ? "cora" : null;
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-8 p-6">
       <Orbe tamanho={220} lerNiveis={lerNiveis} falando={falando} />
       <div className="flex flex-wrap justify-center gap-2">
         <Button variant={fonte === "parado" ? "default" : "outline"} onClick={() => setFonte("parado")}>Parado</Button>
-        <Button variant={fonte === "clara" ? "default" : "outline"} onClick={() => setFonte("clara")}>Clara falando</Button>
+        <Button variant={fonte === "cora" ? "default" : "outline"} onClick={() => setFonte("cora")}>Cora falando</Button>
         <Button variant={fonte === "cliente" ? "default" : "outline"} onClick={() => setFonte("cliente")}>Você falando</Button>
         <Button variant={fonte === "microfone" ? "default" : "outline"} onClick={ligarMicrofone}>Usar meu microfone</Button>
       </div>

@@ -92,7 +92,7 @@ test("centavo de conversa não vira US$ 0,00 na tela", () => {
 });
 
 test("o prompt montado carrega a base inteira e cabe no contexto", () => {
-  const prompt = montarPrompt("Você é a Clara.", BASE_PADRAO);
+  const prompt = montarPrompt("Você é a Cora.", BASE_PADRAO);
   assert.ok(prompt.includes("3883-3010"), "precisa do telefone do suporte");
   assert.ok(prompt.includes("BASE DE CONHECIMENTO"));
   for (const artigo of conhecimento.faq) {
@@ -105,7 +105,7 @@ test("o prompt montado carrega a base inteira e cabe no contexto", () => {
 });
 
 test("a previsão por minuto usa as taxas da documentação", () => {
-  // 30 s de fala do cliente a 10 tokens/s e 30 s da Clara a 20 tokens/s,
+  // 30 s de fala do cliente a 10 tokens/s e 30 s da Cora a 20 tokens/s,
   // mais 4 turnos relendo um prompt de 12 mil tokens vindo do cache.
   const esperado = (300 * 32 + 600 * 64 + 4 * 12_000 * 0.4) / 1e6;
   assert.ok(Math.abs(custoPorMinuto("gpt-realtime", 12_000) - esperado) < 1e-12);

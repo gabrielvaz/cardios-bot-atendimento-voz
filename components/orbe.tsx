@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * O orbe da Clara: uma esfera de pontos que gira e reage à voz.
+ * O orbe da Cora: uma esfera de pontos que gira e reage à voz.
  *
  * Os pontos vêm de uma esfera de Fibonacci, que é a distribuição mais uniforme
  * que se consegue sem iterar, e cada um tem o raio empurrado por uma onda que
@@ -48,7 +48,7 @@ export function Orbe({
   tamanho?: number;
   /** Devolve a amplitude dos dois lados. Chamado uma vez por quadro. */
   lerNiveis: (dt: number) => Niveis;
-  falando: "clara" | "cliente" | null;
+  falando: "cora" | "cliente" | null;
   conectando?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -93,9 +93,9 @@ export function Orbe({
       // Quem tem a palavra dita a cor; a amplitude vem de quem está falando.
       // Sem ninguém falando, o orbe respira: uma senoide lenta, para não
       // ficar morto na tela enquanto a linha está aberta.
-      const amp = quem === "clara" ? niveis.clara
+      const amp = quem === "cora" ? niveis.cora
         : quem === "cliente" ? niveis.cliente
-        : Math.max(niveis.clara, niveis.cliente);
+        : Math.max(niveis.cora, niveis.cliente);
 
       if (!parado) t += dt;
       const respiro = 0.05 + 0.03 * (0.5 + 0.5 * Math.sin(t * 1.1));

@@ -26,12 +26,12 @@ export function Transcricao({ falas }: { falas: Fala[] }) {
       {falas.map((f) => (
         <div key={f.id} className={cn("flex flex-col", f.quem === "cliente" && "items-end")}>
           <span className="mb-1 text-xs font-medium text-muted-foreground">
-            {f.quem === "clara" ? NOME_ATENDENTE : "Você"}
+            {f.quem === "cora" ? NOME_ATENDENTE : "Você"}
           </span>
           <p
             className={cn(
               "max-w-[85%] rounded-lg px-4 py-2.5 text-[15px] leading-relaxed",
-              f.quem === "clara"
+              f.quem === "cora"
                 ? "bg-primary/5 text-foreground"
                 : "border border-border bg-card text-foreground",
               f.parcial && "opacity-60",

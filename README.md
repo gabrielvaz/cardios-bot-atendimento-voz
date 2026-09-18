@@ -1,6 +1,6 @@
-# Clara, atendimento de suporte da Cardios por voz
+# Cora, atendimento de suporte da Cardios por voz
 
-Teste interno. Uma página: você clica em iniciar, fala, e a Clara responde em
+Teste interno. Uma página: você clica em iniciar, fala, e a Cora responde em
 voz, em tempo real, sabendo o que o suporte da Cardios sabe. O custo da
 conversa aparece na tela enquanto ela acontece.
 
@@ -16,7 +16,7 @@ npm run dev     # http://localhost:3210
 
 Abra a configuração, cole a chave da OpenAI e ligue. O navegador vai pedir o
 microfone: isso só funciona em `localhost` ou em HTTPS. **Use fone de ouvido.**
-Sem ele a Clara escuta a própria voz e se interrompe.
+Sem ele a Cora escuta a própria voz e se interrompe.
 
 ## O que ela sabe
 
@@ -43,7 +43,7 @@ já está isolada em `lib/conhecimento/index.ts`.
 ## O orbe
 
 Uma esfera de 700 pontos que gira e reage ao áudio de verdade. Laranja quando a
-Clara fala, navy quando é você.
+Cora fala, navy quando é você.
 
 Ela abre a tela inicial, junto com o lockup da Cardios, respirando numa senoide
 lenta sem áudio nenhum: é o mesmo componente da ligação, e é o que faz a página
@@ -101,7 +101,7 @@ Tudo fica no `localStorage` e vale na ligação seguinte.
 - **Detecção de turno**: `semantic_vad` espera você terminar o raciocínio,
   `server_vad` corta no silêncio e responde mais rápido
 - **O dicionário de fala**, com busca, edição e volta ao original
-- **O system prompt inteiro**, em duas partes: a persona da Clara, curta e feita
+- **O system prompt inteiro**, em duas partes: a persona da Cora, curta e feita
   para editar, e a base gerada. Com a contagem de tokens ao vivo.
 
 ## Como funciona por dentro
@@ -133,7 +133,7 @@ HTTPS; não funciona se você abrir o `out/index.html` pelo `file://`.
 A Realtime cobra por token e separa áudio de texto. O mesmo campo `input_tokens`
 mistura três preços: texto novo, áudio novo e o que veio do cache. Somar tudo
 pelo preço de áudio erra por quase cem vezes a partir do segundo turno, porque o
-prompt da Clara inteiro entra em cache.
+prompt da Cora inteiro entra em cache.
 
 `lib/custo.ts` faz essa separação e é função pura de ponta a ponta, sem relógio
 e sem rede. É a única parte testável sem microfone e a que mais dói se estiver
@@ -155,7 +155,7 @@ lib/custo.ts                        a conta (puro, testado)
 lib/falas.ts                        a lista da conversa e a ordem dela (puro, testado)
 lib/dicionario.ts                   a correção da fala (puro, testado)
 lib/modelos.ts  lib/vozes.ts        as tabelas de preço e de voz
-lib/prompt.ts                       a persona da Clara e a montagem
+lib/prompt.ts                       a persona da Cora e a montagem
 lib/conhecimento/                   a base gerada e o markdown que o modelo lê
 components/atendimento.tsx          a tela inteira
 components/painel-config.tsx        o painel de configuração
@@ -197,10 +197,10 @@ do build e falha se sobrar qualquer caminho absoluto sem o `basePath`.
 A conversa de verdade. O que está verificado: o build estático passa, os 54
 testes passam, o orbe desenha e se move na bancada, a página responde em celular e desktop sem estouro de largura, e
 a OpenAI aceita chamada do navegador nos dois endpoints. Falta ligar com uma
-chave real e ouvir a Clara.
+chave real e ouvir a Cora.
 
 Uma nota sobre a ordem da conversa: a transcrição do que o cliente falou chega
-**depois** que a Clara já começou a responder, porque transcrever a entrada é um
+**depois** que a Cora já começou a responder, porque transcrever a entrada é um
 trabalho paralelo ao de gerar a resposta. O lugar do cliente é reservado em
 `input_audio_buffer.committed`, que fecha o turno dele. `lib/falas.ts` existe
 fora do hook só para essa regra poder ser testada, e um dos testes é o bug

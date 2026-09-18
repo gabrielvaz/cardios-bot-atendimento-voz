@@ -4,7 +4,7 @@
  * Três fontes, nenhuma digitada à mão aqui:
  *   1. A Central de Ajuda publicada em https://v9q.github.io/faqcardios/. Os
  *      artigos vivem num <script id="faq-data"> na própria página.
- *   2. cardios-site/content/products.json, o catálogo condensado: a Clara
+ *   2. cardios-site/content/products.json, o catálogo condensado: a Cora
  *      precisa saber o que é cada produto, não o texto de marketing inteiro.
  *   3. scripts/contato.json, com telefones, endereço e políticas, extraídos do
  *      cardios-site e mantidos aqui porque lá vivem em TypeScript.

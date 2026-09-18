@@ -3,14 +3,14 @@
  *
  * Vive fora do hook por um motivo: a ordem das falas já apareceu errada uma vez
  * e é invisível em teste de tipo. A transcrição do que o cliente falou chega
- * **depois** que a Clara já começou a responder, porque transcrever a entrada é
+ * **depois** que a Cora já começou a responder, porque transcrever a entrada é
  * um trabalho paralelo ao de gerar a resposta. Se a entrada só fosse criada
  * quando o texto chega, a pergunta apareceria embaixo da resposta.
  *
  * A solução é reservar o lugar do cliente em `input_audio_buffer.committed`,
  * que é o evento que fecha o turno dele e sempre precede a resposta.
  */
-export type Quem = "clara" | "cliente";
+export type Quem = "cora" | "cliente";
 
 export type Fala = {
   id: string;
@@ -58,6 +58,6 @@ export function congelar(falas: Fala[]): Fala[] {
 export function paraTexto(falas: Fala[], nomeDaAtendente: string): string {
   return falas
     .filter((f) => f.texto.trim())
-    .map((f) => `${f.quem === "clara" ? nomeDaAtendente : "Cliente"}: ${f.texto}`)
+    .map((f) => `${f.quem === "cora" ? nomeDaAtendente : "Cliente"}: ${f.texto}`)
     .join("\n\n");
 }

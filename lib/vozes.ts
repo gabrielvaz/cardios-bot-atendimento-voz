@@ -6,7 +6,7 @@
 export type Voz = { id: string; nota: string };
 
 export const VOZES: Voz[] = [
-  { id: "marin", nota: "Feminina, clara e calma. A mais natural em português." },
+  { id: "marin", nota: "Feminina, cora e calma. A mais natural em português." },
   { id: "cedar", nota: "Masculina, grave e pausada." },
   { id: "coral", nota: "Feminina, quente e próxima." },
   { id: "sage", nota: "Feminina, sóbria e baixa." },

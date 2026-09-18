@@ -7,7 +7,7 @@
  * quem desenha, e o React nunca fica sabendo.
  *
  * São duas fontes e dois analisadores. O microfone é a voz de quem liga; a
- * trilha remota que chega pelo WebRTC é a voz da Clara. Medir as duas separadas
+ * trilha remota que chega pelo WebRTC é a voz da Cora. Medir as duas separadas
  * é o que permite o orbe mudar de cor conforme quem tem a palavra.
  */
 
@@ -42,13 +42,13 @@ export function suavizar(atual: number, alvo: number, dt: number): number {
   return atual + (alvo - atual) * Math.min(1, dt * k);
 }
 
-export type Niveis = { clara: number; cliente: number };
+export type Niveis = { cora: number; cliente: number };
 
 export class Medidor {
   #contexto: AudioContext | null = null;
   #analisadores = new Map<keyof Niveis, AnalyserNode>();
   #buffers = new Map<keyof Niveis, Uint8Array<ArrayBuffer>>();
-  #suave: Niveis = { clara: 0, cliente: 0 };
+  #suave: Niveis = { cora: 0, cliente: 0 };
 
   /** Só cria o AudioContext quando há o que medir. */
   #garantirContexto(): AudioContext | null {
@@ -89,7 +89,7 @@ export class Medidor {
 
   /** Lê e suaviza. Chamado uma vez por quadro por quem desenha. */
   ler(dt: number): Niveis {
-    for (const quem of ["clara", "cliente"] as const) {
+    for (const quem of ["cora", "cliente"] as const) {
       const analisador = this.#analisadores.get(quem);
       const buffer = this.#buffers.get(quem);
       const alvo = analisador && buffer
@@ -103,7 +103,7 @@ export class Medidor {
   encerrar(): void {
     this.#analisadores.clear();
     this.#buffers.clear();
-    this.#suave = { clara: 0, cliente: 0 };
+    this.#suave = { cora: 0, cliente: 0 };
     void this.#contexto?.close().catch(() => {});
     this.#contexto = null;
   }

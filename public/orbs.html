@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Seis orbes para a Clara</title>
+<title>Seis orbes para a Cora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -75,12 +75,12 @@
 <header>
   <div class="barra">
     <div>
-      <h1>Seis orbes para a Clara</h1>
+      <h1>Seis orbes para a Cora</h1>
       <p class="sub">Todos reagem à mesma amplitude. Escolha um e eu ponho no app.</p>
     </div>
     <div class="grupo">
       <button id="bParado" class="on">Parado</button>
-      <button id="bClara">Clara falando</button>
+      <button id="bCora">Cora falando</button>
       <button id="bVoce">Você falando</button>
       <button id="bMic">Usar meu microfone</button>
       <button id="bTema">Escuro</button>
@@ -391,13 +391,13 @@ requestAnimationFrame(laco);
 /* ------------------------------------------------------------------ *
  * Controles
  * ------------------------------------------------------------------ */
-const botoes = { parado: bParado, clara: bClara, voce: bVoce };
+const botoes = { parado: bParado, cora: bCora, voce: bVoce };
 function trocarEstado(e){
   sinal.estado = e;
   for (const [k, b] of Object.entries(botoes)) b.classList.toggle("on", k === e);
 }
 bParado.onclick = () => trocarEstado("parado");
-bClara.onclick = () => trocarEstado("clara");
+bCora.onclick = () => trocarEstado("cora");
 bVoce.onclick = () => trocarEstado("voce");
 
 bMic.onclick = async () => {
