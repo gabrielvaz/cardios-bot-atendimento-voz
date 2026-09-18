@@ -33,6 +33,9 @@ jobs:
       - run: npm run build
         env:
           BASE_PATH: /cardios-bot-atendimento-voz
+      # No Pages o site mora numa subpasta. Caminho absoluto sem o basePath
+      # funciona local e vira 404 em produção, que foi como o logo quebrou.
+      - run: node scripts/verificar-caminhos.mjs out /cardios-bot-atendimento-voz
       # Sem isto o Pages engole tudo que começa com underscore, e o Next
       # publica os assets em _next.
       - run: touch out/.nojekyll

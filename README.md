@@ -168,6 +168,7 @@ components/ui/beat.tsx              o Beat Design System portado para React
 .github/workflows/pages.yml         o deploy
 scripts/gerar-conhecimento.mjs      extrai das fontes
 scripts/*.test.ts                   os testes
+scripts/verificar-caminhos.mjs      o guarda do basePath
 ```
 
 ## Sobre o Beat
@@ -179,6 +180,17 @@ mesmos `buttonVariants` (que já são cva puro), as mesmas classes de Dialog e a
 mesmas variáveis de cor e raio. Reka UI, que o Beat usa, é a porta Vue do Radix;
 aqui usamos o Radix. Quando o Beat ganhar de volta uma versão React, esse
 arquivo sai.
+
+## Uma armadilha do Pages
+
+No Pages o site mora em `/cardios-bot-atendimento-voz`, não na raiz. Um asset
+referenciado como `src="/marca/logo.png"` funciona local e dá 404 em produção,
+porque o Next emite o caminho cru quando o `src` é texto. Foi assim que o logo
+quebrou.
+
+A correção é importar a imagem como módulo, para o bundler resolver o caminho
+final. O guarda é `scripts/verificar-caminhos.mjs`, que roda no workflow depois
+do build e falha se sobrar qualquer caminho absoluto sem o `basePath`.
 
 ## O que ainda não foi testado
 

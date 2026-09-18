@@ -8,6 +8,13 @@
  * porque 440 px de painel ao lado de 390 px de viewport não existe.
  */
 import Image from "next/image";
+// Importado como módulo, não como caminho em texto.
+//
+// Com `src="/marca/..."` o Next emite o caminho cru, sem o `basePath`, e no
+// GitHub Pages isso aponta para a raiz do domínio, onde o arquivo não está: o
+// logo quebra em produção e funciona local, que é o pior tipo de bug. O import
+// estático faz o bundler resolver o caminho final, com basePath e com hash.
+import logoCardios from "@/public/marca/logo-cardios.png";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Check, Copy, Mic, PhoneOff, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/beat";
@@ -154,10 +161,8 @@ export function Atendimento() {
                     três níveis, então abaixo de uns 44 px de altura o
                     "CARDIOLINE" fica ilegível. */}
                 <Image
-                  src="/marca/logo-cardios.png"
+                  src={logoCardios}
                   alt="Cardios Cardioline"
-                  width={378}
-                  height={359}
                   priority
                   className="mb-7 h-12 w-auto sm:h-14"
                 />
